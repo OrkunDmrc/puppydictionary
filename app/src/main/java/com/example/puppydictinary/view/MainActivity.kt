@@ -21,13 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var sharedReferences = this.getSharedPreferences("com.example.puppydictinary.view", Context.MODE_PRIVATE)
-        if(sharedReferences.getBoolean("isItFirst", true)){
-
-        }else{
-
-        }
-
     }
 }
 

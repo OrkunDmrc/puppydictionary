@@ -22,5 +22,23 @@
         <action
             android:id="@+id/action_mainMenu_to_flags"
             app:destination="@id/flags" />
+        <action
+            android:id="@+id/action_mainMenu_to_favoriteWordsList"
+            app:destination="@id/favoriteWordsList" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteWordsList"
+        android:name="com.example.puppydictinary.view.FavoriteWordsList"
+        android:label="fragment_favorite_words_list"
+        tools:layout="@layout/fragment_favorite_words_list" >
+        <action
+            android:id="@+id/action_favoriteWordsList_to_mainMenu"
+            app:destination="@id/mainMenu" />
+        <argument
+            android:name="myLang"
+            app:argType="string" />
+        <argument
+            android:name="learningLang"
+            app:argType="string" />
     </fragment>
 </navigation>
