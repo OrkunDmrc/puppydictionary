@@ -1,0 +1,49 @@
+package com.example.puppydictinary.service.sqliteservice
+
+import android.database.sqlite.SQLiteDatabase
+import com.example.puppydictinary.model.entities.Category
+
+class CategoryService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLiteService<Category> {
+    private val _db = db
+    private val _myLangId = myLangId
+    private val _learningLangId = learningLangId
+
+    override fun getIdByName(name: String): Int {
+        val cursor = _db.rawQuery("SELECT Id FROM Categories WHERE Name = '${name}'", null)
+        val idIndex = cursor.getColumnIndex("Id")
+        var id = 0
+        if(cursor.moveToFirst()) {
+            id = cursor.getInt(idIndex)
+        }
+        return id
+    }
+
+    override fun getById(id: Int): Category {
+        TODO("Not yet implemented")
+    }
+
+    override fun get(): List<Category> {
+        TODO("Not yet implemented")
+    }
+
+    override fun create(entity: Category) {
+        TODO("Not yet implemented")
+    }
+
+    override fun update(entity: Category) {
+        TODO("Not yet implemented")
+    }
+
+    override fun delete(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun createTable(){
+        _db.execSQL("CREATE TABLE IF NOT EXISTS Categories (Id INTEGER PRIMARY KEY, LangId INTEGER NOT NULL, Name NVARCHAR(50) NOT NULL)")
+    }
+
+    override fun insertTable(){
+        _db.execSQL("INSERT INTO Categories (LangId, Name) VALUES (1, 'diğer'), (1, 'fiil'), (1, 'isim'), (1, 'sıfat'), (1, 'zamir'), (1, 'zarf'), (1, 'edat'), (1, 'bağlaç')")
+    }
+
+}

@@ -18,12 +18,11 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.puppydictinary.R
 import com.example.puppydictinary.adapter.ResultWordRecyclerAdapter
-import com.example.puppydictinary.model.Word
-import com.example.puppydictinary.service.SQLiteService
+import com.example.puppydictinary.model.entities.Word
+import com.example.puppydictinary.service.sqliteservice.SQLiteService
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
 import com.example.puppydictinary.viewmodel.WordListViewModel
 import kotlinx.android.synthetic.main.fragment_main_menu.*
-import kotlinx.android.synthetic.main.result_word_recycler_row.*
 import java.util.*
 
 class MainMenu : Fragment() {

@@ -2,8 +2,8 @@ package com.example.puppydictinary.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.puppydictinary.model.Word
-import com.example.puppydictinary.service.SQLiteService
+import com.example.puppydictinary.model.entities.Word
+import com.example.puppydictinary.service.sqliteservice.SQLiteService
 
 class FavoriteWordsListViewModel(private var SQLiteService : SQLiteService) : ViewModel() {
     val resultWords = MutableLiveData<List<Word>>()

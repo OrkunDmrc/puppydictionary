@@ -5,8 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.puppydictinary.R
-import com.example.puppydictinary.model.Word
-import com.example.puppydictinary.model.YandexDef
+import com.example.puppydictinary.model.entities.Word
 import kotlinx.android.synthetic.main.favorite_words_list_recycler_row.view.*
 import kotlinx.android.synthetic.main.favorite_words_list_recycler_row.view.phonetic_text
 import kotlinx.android.synthetic.main.favorite_words_list_recycler_row.view.response_text_from_lang

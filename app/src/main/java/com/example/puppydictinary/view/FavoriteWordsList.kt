@@ -10,11 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.puppydictinary.R
 import com.example.puppydictinary.adapter.FavoriteWordsListRecyclerAdapter
-import com.example.puppydictinary.adapter.ResultWordRecyclerAdapter
-import com.example.puppydictinary.service.SQLiteService
+import com.example.puppydictinary.service.sqliteservice.SQLiteService
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModelFactory
-import com.example.puppydictinary.viewmodel.WordListViewModel
 import kotlinx.android.synthetic.main.fragment_main_menu.*
 
 
