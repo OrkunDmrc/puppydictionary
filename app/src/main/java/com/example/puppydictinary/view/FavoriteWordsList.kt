@@ -12,14 +12,12 @@ import com.example.puppydictinary.R
 import com.example.puppydictinary.adapter.FavoriteWordsListRecyclerAdapter
 import com.example.puppydictinary.service.sqliteservice.SQLiteService
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
-import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModelFactory
+//import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_main_menu.*
 
 
 class FavoriteWordsList : Fragment() {
     private lateinit var viewModel : FavoriteWordsListViewModel
-    private lateinit var viewModelFactory: FavoriteWordsListViewModelFactory
-    private lateinit var SQLiteService: SQLiteService
     private val recyclerAdapter = FavoriteWordsListRecyclerAdapter(arrayListOf())
     private var myLang: String = ""
     private var learningLang: String = ""
@@ -40,12 +38,12 @@ class FavoriteWordsList : Fragment() {
             myLang = FavoriteWordsListArgs.fromBundle(it).myLang
             learningLang = FavoriteWordsListArgs.fromBundle(it).learningLang
         }
-        SQLiteService = SQLiteService(requireActivity(), myLang, learningLang)
-        viewModelFactory = FavoriteWordsListViewModelFactory(SQLiteService)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(FavoriteWordsListViewModel::class.java)
+        //SQLiteService = SQLiteService(requireActivity(), myLang, learningLang)
+        //viewModelFactory = FavoriteWordsListViewModelFactory(SQLiteService)
+        //viewModel = ViewModelProvider(this, viewModelFactory).get(FavoriteWordsListViewModel::class.java)
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.adapter = recyclerAdapter
-        viewModel.getFavoriteWordsList()
+        viewModel
         observeLiveData()
     }
 

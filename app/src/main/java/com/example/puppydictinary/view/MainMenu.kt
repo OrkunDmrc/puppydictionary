@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.puppydictinary.R
 import com.example.puppydictinary.adapter.ResultWordRecyclerAdapter
+import com.example.puppydictinary.model.YandexDef
 import com.example.puppydictinary.model.entities.Word
 import com.example.puppydictinary.service.sqliteservice.SQLiteService
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
@@ -32,6 +33,8 @@ class MainMenu : Fragment() {
     private lateinit var langTo : String
     private lateinit var wordListViewModel : WordListViewModel
     private lateinit var favoriteWordsListViewModel: FavoriteWordsListViewModel
+    private lateinit var yandexDef : List<YandexDef>
+
     private val words: MutableList<Word> = mutableListOf()
 
     private val recyclerAdapter = ResultWordRecyclerAdapter(arrayListOf())
@@ -55,65 +58,17 @@ class MainMenu : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var sharedReferences = requireActivity().getSharedPreferences("com.example.puppydictinary.view", Context.MODE_PRIVATE)
-        val db = requireActivity().openOrCreateDatabase("DictinaryDB", Context.MODE_PRIVATE,null)
+        //val db = requireActivity().openOrCreateDatabase("DictinaryDB", Context.MODE_PRIVATE,null)
         myLang = sharedReferences.getString("myLang", "")!!
         learningLang = sharedReferences.getString("learningLang", "")!!
         langFrom = sharedReferences.getString("langFrom", learningLang)!!
         langTo = sharedReferences.getString("langTo", myLang)!!
+        favoriteWordsListViewModel = FavoriteWordsListViewModel(requireActivity(), myLang, learningLang)
         if(sharedReferences.getBoolean("isItFirst", true)){
-            favoriteWordsListViewModel = FavoriteWordsListViewModel(SQLiteService(requireActivity(), myLang, learningLang))
             sharedReferences.edit().putBoolean("isItFirst",false).apply()
-            favoriteWordsListViewModel.setFirstAdjust()
-
-            var cursor = db.rawQuery("SELECT * FROM Languages", null)
-            var id = cursor.getColumnIndex("Id")
-            var name = cursor.getColumnIndex("Name")
-            while (cursor.moveToNext()){
-                println("-------- Languages -> ID : ${cursor.getInt(id)} Name : ${cursor.getString(name)}")
-            }
-            cursor = db.rawQuery("SELECT * FROM Categories", null)
-            id = cursor.getColumnIndex("Id")
-            name = cursor.getColumnIndex("Name")
-            while (cursor.moveToNext()){
-                println("-------- Categories -> ID : ${cursor.getInt(id)} Name : ${cursor.getString(name)}")
-            }
-            cursor = db.rawQuery("SELECT * FROM Words", null)
-            id = cursor.getColumnIndex("Id")
-            var langId = cursor.getColumnIndex("LangId")
-            var catId = cursor.getColumnIndex("CategoryId")
-            var word = cursor.getColumnIndex("Word")
-            while (cursor.moveToNext()){
-                println("-------- Words -> ID : ${cursor.getInt(id)} LangId : ${cursor.getInt(langId)} catId : ${cursor.getInt(catId)} word : ${cursor.getString(word)}")
-            }
-            cursor = db.rawQuery("SELECT * FROM WordsLanguages", null)
-            id = cursor.getColumnIndex("WordId")
-            langId = cursor.getColumnIndex("DescLangId")
-            var desc = cursor.getColumnIndex("Description")
-            var isFav = cursor.getColumnIndex("IsFav")
-            var isLearned = cursor.getColumnIndex("IsLearned")
-            while (cursor.moveToNext()){
-                println("-------- WordsLanguages -> WordID : ${cursor.getInt(id)} DescLangId : ${cursor.getInt(langId)} desc : ${cursor.getString(desc)} IsFav : ${cursor.getString(isFav)} IsLearned : ${cursor.getString(isLearned)}")
-            }
-            cursor.close()
+            favoriteWordsListViewModel.setFirstAdjusts()
             view?.let { Navigation.findNavController(it).navigate(MainMenuDirections.actionMainMenuToFlags()) }
         }else{
-            favoriteWordsListViewModel = FavoriteWordsListViewModel(SQLiteService(requireActivity(), myLang, learningLang))
-            var cursor = db.rawQuery("SELECT w.Id, w.Word, wl.Description FROM WordsLanguages as wl join Words as w on w.Id = wl.WordId",null)
-            val id = cursor.getColumnIndex("Id")
-            val word = cursor.getColumnIndex("Word")
-            val desc = cursor.getColumnIndex("Description")
-            while (cursor.moveToNext()){
-                println("-------- WordsLanguages Words -> WordID : ${cursor.getInt(id)} word : ${cursor.getString(word)} desc : ${cursor.getString(desc)}")
-            }
-            cursor = db.rawQuery("SELECT * FROM Languages", null)
-            var id2 = cursor.getColumnIndex("Id")
-            var name2 = cursor.getColumnIndex("Name")
-            var code = cursor.getColumnIndex("Code")
-            while (cursor.moveToNext()){
-                println("-------- Languages -> ID : ${cursor.getInt(id2)} Name : ${cursor.getString(name2)} Code : ${cursor.getString(code)}")
-            }
-            cursor.close()
-
             if(myLang == "" || learningLang == ""){
                 view.let { Navigation.findNavController(it).navigate(MainMenuDirections.actionMainMenuToFlags()) }
             }
@@ -145,6 +100,7 @@ class MainMenu : Fragment() {
                 val searchWord = search_src_text.text.toString().trim().lowercase()
                 wordListViewModel.refreshData(langFrom, langTo, searchWord)
                 observeLiveData()
+                add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                 if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
                 }
@@ -156,7 +112,7 @@ class MainMenu : Fragment() {
                     val searchWord = paragraph_edit_text.text!!.substring(paragraph_edit_text.selectionStart, paragraph_edit_text.selectionEnd).trim().lowercase()
                     wordListViewModel.refreshData(langFrom, langTo, searchWord)
                     observeLiveData()
-                    if(true/*SQLiteService.isFavoriteWord(searchWord)*/){
+                    if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                         add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
                     }
                 }
@@ -166,7 +122,7 @@ class MainMenu : Fragment() {
                     favoriteWordsListViewModel.removeWordFavorites(searchedWord)
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                 }else{
-                    favoriteWordsListViewModel.addWordFavorites(words)
+                    favoriteWordsListViewModel.addWordFavorites(yandexDef)
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
                 }
             }
@@ -218,13 +174,8 @@ class MainMenu : Fragment() {
                 recycler_view.visibility = View.VISIBLE
                 recyclerAdapter.updateWordList(it)
                 words.clear()
-                for(item in recyclerAdapter.wordList){
-                    description = ""
-                    for(desc in item.tr){
-                        description += desc.text + ", "
-                    }
-                    words.add(Word(0, favoriteWordsListViewModel.findCategoryIdByName(item.pos), item.pos, item.text, item.ts, description))
-                }
+                yandexDef = it
+                searchedWord = yandexDef[0].text
             }
         })
         wordListViewModel.resultErrorMessage.observe(viewLifecycleOwner,Observer{

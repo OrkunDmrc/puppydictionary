@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.puppydictinary.service.sqliteservice.SQLiteService
 
-class FavoriteWordsListViewModelFactory(private var SQLiteService : SQLiteService) : ViewModelProvider.Factory {
+/*class FavoriteWordsListViewModelFactory(private var SQLiteService : SQLiteService) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(FavoriteWordsListViewModel::class.java)){
             return FavoriteWordsListViewModel(SQLiteService) as T
@@ -12,4 +12,4 @@ class FavoriteWordsListViewModelFactory(private var SQLiteService : SQLiteServic
         throw java.lang.IllegalArgumentException("FavoriteWordsListViewModel class not found")
         return super.create(modelClass)
     }
-}
+}*/

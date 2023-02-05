@@ -12,7 +12,7 @@ class WordsLanguagesService (db: SQLiteDatabase, myLangId: Int, learningLangId: 
         TODO("Not yet implemented")
     }
 
-    override fun getById(id: Int): WordsLanguages {
+    override fun getById(id: Int): WordsLanguages? {
         TODO("Not yet implemented")
     }
 
@@ -20,8 +20,8 @@ class WordsLanguagesService (db: SQLiteDatabase, myLangId: Int, learningLangId: 
         TODO("Not yet implemented")
     }
 
-    override fun create(entity: WordsLanguages) {
-        TODO("Not yet implemented")
+    override fun add(wordsLanguages: WordsLanguages) {
+        _db.execSQL("INSERT INTO WordsLanguages (WordId, CategoryId, Description) VALUES (${wordsLanguages.WordId}, ${wordsLanguages.CategoryId}, '${wordsLanguages.Description}')")
     }
 
     override fun update(entity: WordsLanguages) {
@@ -33,7 +33,8 @@ class WordsLanguagesService (db: SQLiteDatabase, myLangId: Int, learningLangId: 
     }
 
     override fun createTable(){
-        _db.execSQL("CREATE TABLE IF NOT EXISTS WordsLanguages (WordId INTEGER NOT NULL, DescLangId INTEGER NOT NULL, CategoryId INTEGER NOT NULL, Description NVARCHAR(200) NOT NULL, IsFav BOOLEAN DEFAULT 0 NOT NULL, IsLearned BOOLEAN DEFAULT 0 NOT NULL, FOREIGN KEY (WordId) REFERENCES Words (Id), FOREIGN KEY (DescLangId) REFERENCES Languages(Id), FOREIGN KEY(CategoryId) REFERENCES Categories(Id))")
+        _db.execSQL("CREATE TABLE IF NOT EXISTS WordsLanguages (WordId INTEGER NOT NULL, CategoryId INTEGER NOT NULL, Description NVARCHAR(300) NOT NULL, FOREIGN KEY (WordId) REFERENCES Words (Id), FOREIGN KEY(CategoryId) REFERENCES Categories(Id))")
+
     }
 
     override fun insertTable(){

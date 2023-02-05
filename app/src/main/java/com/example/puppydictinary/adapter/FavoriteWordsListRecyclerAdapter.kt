@@ -26,9 +26,9 @@ class FavoriteWordsListRecyclerAdapter(var wordsList: ArrayList<Word>) : Recycle
         val getPosition = wordsList.get(position)
         val holderItemView = holder.itemView
         holderItemView.response_text_from_lang.text = getPosition.Word
-        holderItemView.type_text.text = getPosition.CategoryName
+        holderItemView.type_text.text = getPosition.Word
         holderItemView.phonetic_text.text = getPosition.Phonetic
-        holderItemView.response_text_to_lang.text = getPosition.Description
+        holderItemView.response_text_to_lang.text = getPosition.Word
         holderItemView.pronunciation_button.setOnClickListener {
             
         }

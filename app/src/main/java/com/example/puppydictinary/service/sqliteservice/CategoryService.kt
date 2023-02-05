@@ -2,6 +2,7 @@ package com.example.puppydictinary.service.sqliteservice
 
 import android.database.sqlite.SQLiteDatabase
 import com.example.puppydictinary.model.entities.Category
+import com.example.puppydictinary.model.entities.Word
 
 class CategoryService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLiteService<Category> {
     private val _db = db
@@ -18,15 +19,26 @@ class CategoryService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : 
         return id
     }
 
-    override fun getById(id: Int): Category {
+    override fun getById(id: Int): Category? {
         TODO("Not yet implemented")
     }
 
     override fun get(): List<Category> {
-        TODO("Not yet implemented")
+        var categories: MutableList<Category> = mutableListOf()
+        val cursor = _db.rawQuery("SELECT Id, LangId, Name FROM Categories",null)
+        if(cursor.count != 0){
+            val idIndex = cursor.getColumnIndex("Id")
+            val langIdIndex = cursor.getColumnIndex("LangId")
+            val nameIndex = cursor.getColumnIndex("Name")
+            while(cursor.moveToNext()) {
+                categories.add(Category(cursor.getInt(idIndex), cursor.getInt(langIdIndex), cursor.getString(nameIndex)))
+            }
+            cursor.close()
+        }
+        return categories
     }
 
-    override fun create(entity: Category) {
+    override fun add(entity: Category) {
         TODO("Not yet implemented")
     }
 

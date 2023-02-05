@@ -9,7 +9,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
     private val _learningLangId = learningLangId
 
     override fun getIdByName(name: String): Int {
-        val cursor = _db.rawQuery("SELECT w.Id FROM Words as w JOIN WordsLanguages as wl on w.Id = wl.WordId WHERE w.Word = '${name}' and w.LangId = $_myLangId and wl.DescLangId = $_learningLangId",null)
+        val cursor = _db.rawQuery("SELECT Id FROM Words WHERE Word = '${name}' and LangId = ${_myLangId} and DescLangId = ${_learningLangId}",null)
         val idIndex = cursor.getColumnIndex("Id")
         var id = 0
         if(cursor.moveToFirst()) {
@@ -19,20 +19,50 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
         return id
     }
 
-    override fun getById(id: Int): Word {
-        TODO("Not yet implemented")
+    override fun getById(id: Int): Word? {
+        var word: Word? = null
+        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned  FROM Words WHERE Id = $id",null)
+        if(cursor.count != 0){
+            val idIndex = cursor.getColumnIndex("Id")
+            val langIdIndex = cursor.getColumnIndex("LangId")
+            val descIdIndex = cursor.getColumnIndex("DescLangId")
+            val wordIndex = cursor.getColumnIndex("Word")
+            val phoneticIndex = cursor.getColumnIndex("Phonetic")
+            val isFavIndex = cursor.getColumnIndex("IsFav")
+            val isLearnedIndex = cursor.getColumnIndex("IsLearned")
+            while(cursor.moveToNext()) {
+                word = Word(cursor.getInt(idIndex), cursor.getInt(langIdIndex), cursor.getInt(descIdIndex), cursor.getString(wordIndex), cursor.getString(phoneticIndex), cursor.getInt(isFavIndex), cursor.getInt(isLearnedIndex))
+            }
+            cursor.close()
+        }
+        return word
     }
 
     override fun get(): List<Word> {
-        TODO("Not yet implemented")
+        var words: MutableList<Word> = mutableListOf()
+        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned FROM Words",null)
+        if(cursor.count != 0){
+            val idIndex = cursor.getColumnIndex("Id")
+            val langIdIndex = cursor.getColumnIndex("LangId")
+            val descIdIndex = cursor.getColumnIndex("DescLangId")
+            val wordIndex = cursor.getColumnIndex("Word")
+            val phoneticIndex = cursor.getColumnIndex("Phonetic")
+            val isFavIndex = cursor.getColumnIndex("IsFav")
+            val isLearnedIndex = cursor.getColumnIndex("IsLearned")
+            if(cursor.moveToFirst()) {
+                words.add(Word(cursor.getInt(idIndex), cursor.getInt(langIdIndex), cursor.getInt(descIdIndex), cursor.getString(wordIndex), cursor.getString(phoneticIndex), cursor.getInt(isFavIndex), cursor.getInt(isLearnedIndex)))
+            }
+            cursor.close()
+        }
+        return words
     }
 
-    override fun create(entity: Word) {
-        TODO("Not yet implemented")
+    override fun add(word: Word) {
+        _db.execSQL("INSERT INTO Words (LangId, DescLangId, Word, Phonetic, IsFav, IsLearned) VALUES (${word.LangId}, ${word.DescLangId}, '${word.Word}', '${word.Phonetic}', ${word.IsFav}, ${word.IsLearned})")
     }
 
-    override fun update(entity: Word) {
-        TODO("Not yet implemented")
+    override fun update(word: Word) {
+        _db.execSQL("UPDATE Words SET IsFav = ${word.IsFav}, IsLearned = ${word.IsLearned} WHERE Id = ${word.Id}")
     }
 
     override fun delete(id: Int) {
@@ -40,7 +70,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
     }
 
     override fun createTable(){
-        _db.execSQL("CREATE TABLE IF NOT EXISTS Words (Id INTEGER PRIMARY KEY, LangId INTEGER NOT NULL, Word NVARCHAR(50) NOT NULL, Phonetic NVARCHAR(50) NOT NULL, Is100 BOOLEAN DEFAULT 0 NOT NULL, Is1000 BOOLEAN DEFAULT 0 NOT NULL, FOREIGN KEY(LangId) REFERENCES Languages(Id))")
+        _db.execSQL("CREATE TABLE IF NOT EXISTS Words (Id INTEGER PRIMARY KEY, LangId INTEGER NOT NULL, DescLangId INTEGER NOT NULL, Word NVARCHAR(50) NOT NULL, Phonetic NVARCHAR(50) NOT NULL, IsFav BOOLEAN DEFAULT 0 NOT NULL, IsLearned BOOLEAN DEFAULT 0 NOT NULL, FOREIGN KEY(LangId) REFERENCES Languages(Id), FOREIGN KEY(DescLangId) REFERENCES Languages(Id))")
     }
 
     override fun insertTable(){

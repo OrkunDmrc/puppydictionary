@@ -3,10 +3,10 @@ package com.example.puppydictinary.service.sqliteservice
 import android.database.sqlite.SQLiteDatabase
 import com.example.puppydictinary.model.entities.Language
 
-class LanguageService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLiteService<Language>  {
+class LanguageService(db: SQLiteDatabase, myLang: String, learningLang: String) : SQLiteService<Language>  {
     private val _db = db
-    private val _myLangId = myLangId
-    private val _learningLangId = learningLangId
+    private val _myLangId = getIdByCode(myLang)
+    private val _learningLangId = getIdByCode(learningLang)
 
     override fun getIdByName(name: String): Int {
         TODO("Not yet implemented")
@@ -26,7 +26,7 @@ class LanguageService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : 
         return 0
     }
 
-    override fun getById(id: Int): Language {
+    override fun getById(id: Int): Language? {
         TODO("Not yet implemented")
     }
 
@@ -34,7 +34,7 @@ class LanguageService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : 
         TODO("Not yet implemented")
     }
 
-    override fun create(entity: Language) {
+    override fun add(entity: Language) {
         TODO("Not yet implemented")
     }
 

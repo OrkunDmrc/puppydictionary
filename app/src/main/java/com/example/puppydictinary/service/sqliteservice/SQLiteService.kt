@@ -9,11 +9,11 @@ interface SQLiteService<T>/*(/*activity: Activity, myLang: String, learningLang:
 
     fun getIdByName(name: String): Int
 
-    fun getById(id: Int): T
+    fun getById(id: Int): T?
 
     fun get() : List<T>
 
-    fun create(entity: T)
+    fun add(entity: T)
 
     fun update(entity: T)
 
