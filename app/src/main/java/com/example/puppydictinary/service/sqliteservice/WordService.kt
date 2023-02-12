@@ -21,7 +21,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
 
     override fun getById(id: Int): Word? {
         var word: Word? = null
-        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned  FROM Words WHERE Id = $id",null)
+        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned  FROM Words WHERE Id = $id and LangId = ${_myLangId} and DescLangId = ${_learningLangId}",null)
         if(cursor.count != 0){
             val idIndex = cursor.getColumnIndex("Id")
             val langIdIndex = cursor.getColumnIndex("LangId")
@@ -40,7 +40,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
 
     override fun get(): List<Word> {
         var words: MutableList<Word> = mutableListOf()
-        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned FROM Words",null)
+        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned FROM Words WHERE LangId = ${_myLangId} and DescLangId = ${_learningLangId}",null)
         if(cursor.count != 0){
             val idIndex = cursor.getColumnIndex("Id")
             val langIdIndex = cursor.getColumnIndex("LangId")
@@ -49,7 +49,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
             val phoneticIndex = cursor.getColumnIndex("Phonetic")
             val isFavIndex = cursor.getColumnIndex("IsFav")
             val isLearnedIndex = cursor.getColumnIndex("IsLearned")
-            if(cursor.moveToFirst()) {
+            while(cursor.moveToNext()) {
                 words.add(Word(cursor.getInt(idIndex), cursor.getInt(langIdIndex), cursor.getInt(descIdIndex), cursor.getString(wordIndex), cursor.getString(phoneticIndex), cursor.getInt(isFavIndex), cursor.getInt(isLearnedIndex)))
             }
             cursor.close()

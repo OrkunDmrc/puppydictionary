@@ -2,8 +2,10 @@ package com.example.puppydictinary.viewmodel
 
 import android.app.Activity
 import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.puppydictinary.model.WordViewModel
 import com.example.puppydictinary.model.YandexDef
 import com.example.puppydictinary.model.entities.Category
 import com.example.puppydictinary.model.entities.Word
@@ -19,7 +21,7 @@ class FavoriteWordsListViewModel(activity: Activity, myLang: String, learningLan
     private var myLangId : Int = 0
     private var learningLangId : Int = 0
 
-    val resultWords = MutableLiveData<List<Word>>()
+    val resultWords = MutableLiveData<List<WordViewModel>>()
 
     init {
         languageService = LanguageService(_db, myLang, myLang)
@@ -45,8 +47,30 @@ class FavoriteWordsListViewModel(activity: Activity, myLang: String, learningLan
         wordsLanguagesService.insertTable()
     }
 
+    fun refreshData(){
+        var wordViewModels: MutableList<WordViewModel> = mutableListOf()
+        val favWords = getFavoriteWords()
+        for(item in favWords){
+            val favWordsDescs = getDescriptionsByWordId(item.Id)
+            var description = ""
+            for(desc in favWordsDescs){
+                description += "\n${getCategoryNameById(desc.CategoryId)}:\n${desc.Description}\n"
+            }
+            wordViewModels.add(WordViewModel(item.Id, item.LangId, item.DescLangId, item.Word, item.Phonetic, item.IsFav, item.IsLearned, description))
+        }
+        resultWords.value = wordViewModels
+    }
+
     fun getFavoriteWords(): List<Word>{
-        return wordService.get()
+        return wordService.get().filter { it.IsFav == 1 }
+    }
+
+    fun getDescriptionsByWordId(id: Int): List<WordsLanguages>{
+        return wordsLanguagesService.get().filter{ it.WordId == id }
+    }
+
+    fun getCategoryNameById(id: Int): String? {
+        return categoryService.getById(id)?.Name
     }
 
     fun isFavoriteWord(word: String): Boolean{
@@ -72,9 +96,20 @@ class FavoriteWordsListViewModel(activity: Activity, myLang: String, learningLan
             for(item in yandexDef){
                 description = ""
                 for(desc in item.tr){
-                    description += desc.text + ", "
+                    description += if(desc == item.tr.lastOrNull()) desc.text else desc.text + ", "
                 }
                 wordsLanguagesService.add(WordsLanguages(wordId, categoryService.getIdByName(item.pos), description))
+            }
+        }
+    }
+
+    fun addRecordedWordFavorites(wordText: String){
+        val wordId = wordService.getIdByName(wordText)
+        if(wordId != 0){
+            val word = wordService.getById(wordId)
+            if (word != null) {
+                word.IsFav = 1
+                wordService.update(word)
             }
         }
     }

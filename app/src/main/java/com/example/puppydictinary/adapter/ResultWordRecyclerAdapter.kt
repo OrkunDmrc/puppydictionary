@@ -27,7 +27,7 @@ class ResultWordRecyclerAdapter(var wordList : ArrayList<YandexDef>) : RecyclerV
         holderItemView.type_text.text = "${getPosition.pos}"
         holderItemView.phonetic_text.text = "(${getPosition.ts})"
         for(tr in getPosition.tr){
-            meanings += tr.text + ", "
+            meanings += if(tr == getPosition.tr.lastOrNull()) tr.text else tr.text + ", "
         }
         holderItemView.response_text_to_lang.text = meanings
     }

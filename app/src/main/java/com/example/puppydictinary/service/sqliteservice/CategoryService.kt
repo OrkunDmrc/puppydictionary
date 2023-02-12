@@ -20,7 +20,15 @@ class CategoryService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : 
     }
 
     override fun getById(id: Int): Category? {
-        TODO("Not yet implemented")
+        val cursor = _db.rawQuery("SELECT Id, LangId, Name FROM Categories WHERE Id = ${id}", null)
+        val idIndex = cursor.getColumnIndex("Id")
+        val langIdIndex = cursor.getColumnIndex("LangId")
+        val nameIndex = cursor.getColumnIndex("Name")
+        var category: Category? = null
+        if(cursor.moveToFirst()) {
+            category = Category(cursor.getInt(idIndex), cursor.getInt(langIdIndex), cursor.getString(nameIndex))
+        }
+        return category
     }
 
     override fun get(): List<Category> {

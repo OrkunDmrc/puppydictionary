@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,13 +13,15 @@ import com.example.puppydictinary.R
 import com.example.puppydictinary.adapter.FavoriteWordsListRecyclerAdapter
 import com.example.puppydictinary.service.sqliteservice.SQLiteService
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
+import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModelFactory
 //import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_main_menu.*
 
 
 class FavoriteWordsList : Fragment() {
     private lateinit var viewModel : FavoriteWordsListViewModel
-    private val recyclerAdapter = FavoriteWordsListRecyclerAdapter(arrayListOf())
+    private lateinit var viewModelFactory : FavoriteWordsListViewModelFactory
+    private lateinit var recyclerAdapter : FavoriteWordsListRecyclerAdapter
     private var myLang: String = ""
     private var learningLang: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,12 +41,13 @@ class FavoriteWordsList : Fragment() {
             myLang = FavoriteWordsListArgs.fromBundle(it).myLang
             learningLang = FavoriteWordsListArgs.fromBundle(it).learningLang
         }
-        //SQLiteService = SQLiteService(requireActivity(), myLang, learningLang)
-        //viewModelFactory = FavoriteWordsListViewModelFactory(SQLiteService)
-        //viewModel = ViewModelProvider(this, viewModelFactory).get(FavoriteWordsListViewModel::class.java)
+        viewModelFactory = FavoriteWordsListViewModelFactory(requireActivity(), myLang, learningLang)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(FavoriteWordsListViewModel::class.java)
+        recyclerAdapter = FavoriteWordsListRecyclerAdapter(arrayListOf(), view.context, requireActivity() as AppCompatActivity, viewModel)
+
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.adapter = recyclerAdapter
-        viewModel
+        viewModel.refreshData()
         observeLiveData()
     }
 

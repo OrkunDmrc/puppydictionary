@@ -40,7 +40,6 @@ class MainMenu : Fragment() {
     private val recyclerAdapter = ResultWordRecyclerAdapter(arrayListOf())
     private var tts: TextToSpeech? = null
     private var searchedWord: String = ""
-    private var description: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
