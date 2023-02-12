@@ -148,13 +148,13 @@
                     android:layout_weight="1"
                     android:src="@drawable/ic_baseline_search_24"
                     android:background="@color/button"/>
-                <ImageButton
+                <!--<ImageButton
                     android:id="@+id/gecis_deneme_button"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:src="@drawable/ic_baseline_favorite_24"
-                    android:background="@color/button"/>
+                    android:background="@color/button"/>-->
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

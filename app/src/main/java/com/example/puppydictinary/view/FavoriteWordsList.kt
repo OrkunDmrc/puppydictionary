@@ -1,13 +1,13 @@
 package com.example.puppydictinary.view
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.puppydictinary.R
 import com.example.puppydictinary.adapter.FavoriteWordsListRecyclerAdapter
@@ -26,6 +26,27 @@ class FavoriteWordsList : Fragment() {
     private var learningLang: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.nav_study_words, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.study_words_button -> {
+                if(recyclerAdapter.itemCount >= 5){
+                    val showStudyWordsPopUp = StudyWordsPopUp(recyclerAdapter.wordsList)
+                    activity?.let { showStudyWordsPopUp.show(it.supportFragmentManager, "showStudyWordsPopUp") }
+                }else{
+                    Toast.makeText(context,"Çalışma yapılabilmesi için kelime sayısının 5'den fazla olması gerekmektedir.", Toast.LENGTH_LONG).show()
+                }
+                true
+            }
+            else ->  super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateView(
@@ -44,7 +65,6 @@ class FavoriteWordsList : Fragment() {
         viewModelFactory = FavoriteWordsListViewModelFactory(requireActivity(), myLang, learningLang)
         viewModel = ViewModelProvider(this, viewModelFactory).get(FavoriteWordsListViewModel::class.java)
         recyclerAdapter = FavoriteWordsListRecyclerAdapter(arrayListOf(), view.context, requireActivity() as AppCompatActivity, viewModel)
-
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.adapter = recyclerAdapter
         viewModel.refreshData()

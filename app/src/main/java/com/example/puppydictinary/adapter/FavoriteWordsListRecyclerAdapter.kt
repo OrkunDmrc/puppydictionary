@@ -44,12 +44,14 @@ class FavoriteWordsListRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, 
             showDesc.show((activity).supportFragmentManager, "showDesc")
         }
         holderItemView.pronunciation_button.setOnClickListener {
+            holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_down_24)
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
                     tts?.language = Locale.US
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(getPosition.Word, TextToSpeech.QUEUE_ADD, null,"")
                 }
+                holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_up_24)
             })
         }
         holderItemView.add_remove_favorite_button.setOnClickListener{

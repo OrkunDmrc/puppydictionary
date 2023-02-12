@@ -4,10 +4,8 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +42,23 @@ class MainMenu : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.nav_main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.fav_words_button -> {
+                val action = MainMenuDirections.actionMainMenuToFavoriteWordsList(myLang, learningLang)
+                Navigation.findNavController(requireView()).navigate(action)
+                true
+            }
+            else ->  super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateView(
@@ -82,12 +97,14 @@ class MainMenu : Fragment() {
                 setDictionaryFlags(langFrom, langTo)
             }
             pronunciation_button.setOnClickListener {
+                pronunciation_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_volume_down_24)
                 tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                     if (it == TextToSpeech.SUCCESS) {
                         tts?.language = Locale.US
                         tts?.setSpeechRate(1.0f)
                         tts?.speak(searchedWord, TextToSpeech.QUEUE_ADD, null,"")
                     }
+                    pronunciation_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_volume_up_24)
                 })
             }
             wordListViewModel = ViewModelProvider(this).get(WordListViewModel::class.java)
@@ -124,10 +141,6 @@ class MainMenu : Fragment() {
                     favoriteWordsListViewModel.addWordFavorites(yandexDef)
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
                 }
-            }
-            gecis_deneme_button.setOnClickListener {
-                val action = MainMenuDirections.actionMainMenuToFavoriteWordsList(myLang, learningLang)
-                Navigation.findNavController(it).navigate(action)
             }
         }
     }
