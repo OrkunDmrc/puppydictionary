@@ -23,8 +23,4 @@ class Study : Fragment() {
         parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySelection()).commit()
         return inflater.inflate(R.layout.fragment_study, container, false)
     }
-
-    fun studySelectionFragment(view: View){
-        parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySelection()).commit()
-    }
 }
