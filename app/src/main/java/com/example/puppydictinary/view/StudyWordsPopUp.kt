@@ -12,12 +12,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginBottom
 import androidx.core.view.setMargins
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
 import kotlinx.android.synthetic.main.fragment_study_words_pop_up.*
 
 
-class StudyWordsPopUp(val words: List<WordViewModel>) : DialogFragment() {
+class StudyWordsPopUp(val words: List<WordViewModel>, val navController: NavController) : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,9 @@ class StudyWordsPopUp(val words: List<WordViewModel>) : DialogFragment() {
             word_number_button.setTextColor(getResources().getColor(R.color.text))
             word_number_button.setTextSize(2,18F)
             word_number_button.setOnClickListener{
-                println("Study Random ${i} words")
+                dismiss()
+                val action = FavoriteWordsListDirections.actionFavoriteWordsListToStudy()
+                navController.navigate(action)
             }
             linear_layout.addView(word_number_button)
         }

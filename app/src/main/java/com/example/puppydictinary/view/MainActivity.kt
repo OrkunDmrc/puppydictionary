@@ -3,6 +3,7 @@ package com.example.puppydictinary.view
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.Navigation
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.Yandex

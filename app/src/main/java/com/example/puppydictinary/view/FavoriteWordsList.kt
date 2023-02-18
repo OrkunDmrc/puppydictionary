@@ -38,7 +38,7 @@ class FavoriteWordsList : Fragment() {
         return when(item.itemId){
             R.id.study_words_button -> {
                 if(recyclerAdapter.itemCount >= 5){
-                    val showStudyWordsPopUp = StudyWordsPopUp(recyclerAdapter.wordsList)
+                    val showStudyWordsPopUp = StudyWordsPopUp(recyclerAdapter.wordsList, Navigation.findNavController(requireView()))
                     activity?.let { showStudyWordsPopUp.show(it.supportFragmentManager, "showStudyWordsPopUp") }
                 }else{
                     Toast.makeText(context,"Çalışma yapılabilmesi için kelime sayısının 5'den fazla olması gerekmektedir.", Toast.LENGTH_LONG).show()

@@ -40,5 +40,17 @@
         <argument
             android:name="learningLang"
             app:argType="string" />
+        <action
+            android:id="@+id/action_favoriteWordsList_to_study"
+            app:destination="@id/study" />
+    </fragment>
+    <fragment
+        android:id="@+id/study"
+        android:name="com.example.puppydictinary.view.Study"
+        android:label="fragment_study"
+        tools:layout="@layout/fragment_study" >
+        <action
+            android:id="@+id/action_study_to_favoriteWordsList"
+            app:destination="@id/favoriteWordsList" />
     </fragment>
 </navigation>
