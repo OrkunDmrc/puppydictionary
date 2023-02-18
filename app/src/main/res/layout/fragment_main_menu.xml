@@ -61,7 +61,10 @@
                     android:layout_weight="7"
                     android:textSize="20dp"
                     android:padding="10dp"
-                    android:hint="Search"/>
+                    android:ellipsize="none"
+                    android:imeOptions="actionSearch"
+                    android:hint="Search"
+                    android:singleLine="true" />
                 <ImageButton
                     android:id="@+id/search_button"
                     android:layout_width="0dp"

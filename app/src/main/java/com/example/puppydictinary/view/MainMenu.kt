@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -86,8 +87,8 @@ class MainMenu : Fragment() {
             if(myLang == "" || learningLang == ""){
                 view.let { Navigation.findNavController(it).navigate(MainMenuDirections.actionMainMenuToFlags()) }
             }
-            (activity as AppCompatActivity).supportActionBar?.show()
-            (activity as AppCompatActivity).supportActionBar?.title = ""
+            //(activity as AppCompatActivity).supportActionBar?.show()
+            //(activity as AppCompatActivity).supportActionBar?.title = ""
             setDictionaryFlags(langFrom, langTo)
             change_dictionary_flags.setOnClickListener{
                 sharedReferences.edit().putString("langFrom", langTo).apply()
@@ -95,6 +96,19 @@ class MainMenu : Fragment() {
                 langFrom = sharedReferences.getString("langFrom", "")!!
                 langTo = sharedReferences.getString("langTo", "")!!
                 setDictionaryFlags(langFrom, langTo)
+            }
+            search_src_text.setOnEditorActionListener() { textView, i, keyEvent ->
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    val searchWord = search_src_text.text.toString().trim().lowercase()
+                    wordListViewModel.refreshData(langFrom, langTo, searchWord)
+                    observeLiveData()
+                    add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
+                    if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
+                        add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
+                    }
+                    true
+                }
+                false
             }
             pronunciation_button.setOnClickListener {
                 pronunciation_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_volume_down_24)
@@ -128,6 +142,7 @@ class MainMenu : Fragment() {
                     val searchWord = paragraph_edit_text.text!!.substring(paragraph_edit_text.selectionStart, paragraph_edit_text.selectionEnd).trim().lowercase()
                     wordListViewModel.refreshData(langFrom, langTo, searchWord)
                     observeLiveData()
+                    add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                     if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                         add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
                     }
