@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_study_selection.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StudySelection(val wordsList: List<WordViewModel>) : Fragment() {
+class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
     private var wordIndex: Int = 0
     private var correctIndex: Int = 0
     private lateinit var optionList: ArrayList<TextView>
@@ -36,24 +37,27 @@ class StudySelection(val wordsList: List<WordViewModel>) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        studyImageViews[0].setBackgroundResource(R.color.card)
         optionList = arrayListOf<TextView>(option_1, option_2, option_3, option_4)
         nextButton.setOnClickListener {
-            println("will be next")
+            if(wordIndex < wordsList.size)
+                fillObjects()
+            else
+                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
+            nextButton.visibility = View.INVISIBLE
         }
         nextButton.visibility = View.INVISIBLE
         fillObjects()
         for(item in optionList){
             item.setOnClickListener{
-                if(correctIndex == optionList.indexOf(item) || optionList[correctIndex].text == wordsList[wordIndex].Description){
+                if(correctIndex == optionList.indexOf(item) || optionList[correctIndex].text == item.text){
                     optionList[optionList.indexOf(item)].setBackgroundResource(R.color.button)
                 }else{
                     optionList[correctIndex].setBackgroundResource(R.color.button)
                     optionList[optionList.indexOf(item)].setBackgroundResource(R.color.wrong)
                 }
-                Handler().postDelayed({
-                    wordIndex++
-                    if(wordIndex < wordsList.size) fillObjects() else nextButton.visibility = View.VISIBLE
-                }, 1500)
+                wordIndex++
+                nextButton.visibility = View.VISIBLE
             }
         }
     }

@@ -5,14 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.FragmentManager
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
+import kotlinx.android.synthetic.main.fragment_study.*
 
 class Study : Fragment() {
     private lateinit var favoriteWordsListViewModel: FavoriteWordsListViewModel
     private lateinit var words : ArrayList<WordViewModel>
+    private lateinit var studyImageViews: ArrayList<ImageView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +30,16 @@ class Study : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        studyImageViews = arrayListOf(selection_study, voice_study, pronunciation_study, check_study)
         arguments?.let {
             favoriteWordsListViewModel = FavoriteWordsListViewModel(requireActivity(), StudyArgs.fromBundle(it).myLang, StudyArgs.fromBundle(it).learningLang)
             words = favoriteWordsListViewModel.getFavoriteWordsByIds(StudyArgs.fromBundle(it).wordIds.toTypedArray()) as ArrayList<WordViewModel>
         }
-        parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySelection(words)).commit()
+        selection_study.setBackgroundResource(R.color.empty)
+        voice_study.setBackgroundResource(R.color.empty)
+        pronunciation_study.setBackgroundResource(R.color.empty)
+        check_study.setBackgroundResource(R.color.empty)
+        parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySelection(words, studyImageViews)).commit()
+
     }
 }
