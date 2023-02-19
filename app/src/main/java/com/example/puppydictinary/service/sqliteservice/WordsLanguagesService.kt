@@ -17,6 +17,21 @@ class WordsLanguagesService (db: SQLiteDatabase, myLangId: Int, learningLangId: 
         TODO("Not yet implemented")
     }
 
+    fun getAllById(id: Int): List<WordsLanguages>? {
+        var wordsLanguages: MutableList<WordsLanguages> = mutableListOf()
+        val cursor = _db.rawQuery("SELECT WordId, CategoryId, Description FROM WordsLanguages WHERE WordId = ${id}",null)
+        if(cursor.count != 0){
+            val wordIdIndex = cursor.getColumnIndex("WordId")
+            val categoryIdIndex = cursor.getColumnIndex("CategoryId")
+            val descriptionIndex = cursor.getColumnIndex("Description")
+            while(cursor.moveToNext()) {
+                wordsLanguages.add(WordsLanguages(cursor.getInt(wordIdIndex), cursor.getInt(categoryIdIndex), cursor.getString(descriptionIndex)))
+            }
+            cursor.close()
+        }
+        return wordsLanguages
+    }
+
     override fun get(): List<WordsLanguages> {
         var wordsLanguages: MutableList<WordsLanguages> = mutableListOf()
         val cursor = _db.rawQuery("SELECT WordId, CategoryId, Description FROM WordsLanguages",null)

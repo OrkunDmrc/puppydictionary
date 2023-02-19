@@ -12,4 +12,5 @@
     <color name="text">#FFFFCD38</color>
     <color name="button">#FF36AE7C</color>
     <color name="card">#FF0081C9</color>
+    <color name="wrong">#FFEB455F</color>
 </resources>

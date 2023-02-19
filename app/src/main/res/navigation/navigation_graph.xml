@@ -52,5 +52,12 @@
         <action
             android:id="@+id/action_study_to_favoriteWordsList"
             app:destination="@id/favoriteWordsList" />
+        <argument
+            android:name="wordIds"
+            app:argType="integer[]" />
+        <argument
+            android:name="myLang"
+            app:argType="string" />
+        <argument android:name="learningLang" />
     </fragment>
 </navigation>

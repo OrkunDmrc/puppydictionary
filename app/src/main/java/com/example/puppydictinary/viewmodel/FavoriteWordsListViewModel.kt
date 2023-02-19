@@ -65,6 +65,20 @@ class FavoriteWordsListViewModel(activity: Activity, myLang: String, learningLan
         return wordService.get().filter { it.IsFav == 1 }
     }
 
+    fun getFavoriteWordsByIds(ids: Array<Int>): List<WordViewModel>{
+        var wordViewModelList = ArrayList<WordViewModel>()
+        for(id in ids){
+            val word = wordService.getById(id)
+            val wordDesc = wordsLanguagesService.getAllById(id)
+            var description = ""
+            for(desc in wordDesc!!){
+                description += if(desc == wordDesc.last()) "${desc.Description}" else "${desc.Description}\n"
+            }
+            wordViewModelList.add(WordViewModel(id, word!!.LangId, word.DescLangId, word.Word, word.Phonetic, word.IsFav, word.IsLearned, description))
+        }
+        return wordViewModelList
+    }
+
     fun getDescriptionsByWordId(id: Int): List<WordsLanguages>{
         return wordsLanguagesService.get().filter{ it.WordId == id }
     }

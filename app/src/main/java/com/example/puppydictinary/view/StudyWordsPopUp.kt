@@ -17,9 +17,10 @@ import androidx.navigation.Navigation
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
 import kotlinx.android.synthetic.main.fragment_study_words_pop_up.*
+import kotlin.random.Random
 
 
-class StudyWordsPopUp(val words: List<WordViewModel>, val navController: NavController) : DialogFragment() {
+class StudyWordsPopUp(val words: List<WordViewModel>, val navController: NavController, val myLang: String, val learningLang: String) : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +48,12 @@ class StudyWordsPopUp(val words: List<WordViewModel>, val navController: NavCont
             word_number_button.setTextSize(2,18F)
             word_number_button.setOnClickListener{
                 dismiss()
-                val action = FavoriteWordsListDirections.actionFavoriteWordsListToStudy()
+                var wordIds = ArrayList<Int>()
+                val randomValues = List(i) { Random.nextInt(0, words.size - 1) }
+                for(item in randomValues){
+                    wordIds.add(words[item].Id)
+                }
+                val action = FavoriteWordsListDirections.actionFavoriteWordsListToStudy(wordIds.toIntArray(), myLang, learningLang)
                 navController.navigate(action)
             }
             linear_layout.addView(word_number_button)

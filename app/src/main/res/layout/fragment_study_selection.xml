@@ -40,7 +40,7 @@
     </LinearLayout>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/text"
         android:backgroundTint="@color/card"
         android:layout_marginHorizontal="35dp"
@@ -48,17 +48,16 @@
         <TextView
             android:id="@+id/option_1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/text"
             android:text="çalışmak, çalışma, çalışmak, çalışma, çalışmak, çalışma, çalışmak, çalışma, çalışma, çalışma, çalışma"
             android:gravity="center"
-            android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="15dp"/>
+            android:padding="3dp"
+            android:textSize="17dp"/>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/text"
         android:backgroundTint="@color/card"
         android:layout_marginHorizontal="35dp"
@@ -67,17 +66,16 @@
         <TextView
             android:id="@+id/option_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/text"
             android:text="çalışmak, çalışma,"
             android:gravity="center"
-            android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="15dp"/>
+            android:padding="3dp"
+            android:textSize="17dp"/>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/text"
         android:backgroundTint="@color/card"
         android:layout_marginHorizontal="35dp"
@@ -86,17 +84,16 @@
         <TextView
             android:id="@+id/option_3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/text"
             android:text="çalışmak, çalışma,"
             android:gravity="center"
-            android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="15dp"/>
+            android:padding="3dp"
+            android:textSize="17dp"/>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/text"
         android:backgroundTint="@color/card"
         android:layout_marginHorizontal="35dp"
@@ -105,13 +102,22 @@
         <TextView
             android:id="@+id/option_4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/text"
             android:text="çalışmak, çalışma,"
             android:gravity="center"
-            android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="15dp"/>
+            android:padding="3dp"
+            android:textSize="17dp"/>
     </androidx.cardview.widget.CardView>
-
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:text="next"
+        android:textColor="@color/text"
+        android:textSize="25dp"
+        android:textStyle="bold"/>
 </LinearLayout>
