@@ -88,7 +88,6 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             }
             true
         }
-
         phonetic_layout.setOnClickListener{
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
@@ -106,13 +105,14 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
                 fillObjects()
             }else {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.study_frame, StudySpeak(wordsList, studyImageViews)).commit()
+                    .replace(R.id.study_frame, StudyReport(wordsList, studyImageViews)).commit()
             }
             nextButton.visibility = View.INVISIBLE
             description_layout.visibility = View.INVISIBLE
         }
         not_speak.setOnClickListener {
-            //direk yönlendir
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.study_frame, StudyReport(wordsList, studyImageViews)).commit()
         }
         fillObjects()
     }
