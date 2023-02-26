@@ -63,16 +63,14 @@ class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             imm.hideSoftInputFromWindow(view?.getWindowToken(), 0)
             check_button.isEnabled = false
             description_layout.visibility = View.VISIBLE
+            wordIndex++
             nextButton.visibility = View.VISIBLE
         }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size) {
-                wordIndex++
+            if(wordIndex < wordsList.size)
                 fillObjects()
-            }else {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
-            }
+            else
+                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySpeak(wordsList, studyImageViews)).commit()
             nextButton.visibility = View.INVISIBLE
             description_layout.visibility = View.INVISIBLE
         }

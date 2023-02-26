@@ -48,13 +48,10 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
             })
         }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size) {
-                wordIndex++
+            if(wordIndex < wordsList.size)
                 fillObjects()
-            }else {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
-            }
+            else
+                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
             nextButton.visibility = View.INVISIBLE
         }
         nextButton.visibility = View.INVISIBLE
@@ -67,7 +64,7 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
                     optionList[correctIndex].setBackgroundResource(R.color.button)
                     optionList[optionList.indexOf(item)].setBackgroundResource(R.color.wrong)
                 }
-
+                wordIndex++
                 nextButton.visibility = View.VISIBLE
                 makeDisenable()
             }
