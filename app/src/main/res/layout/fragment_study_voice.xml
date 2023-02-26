@@ -11,7 +11,8 @@
         tools:context=".view.StudySelection"
         android:background="@color/background"
         android:orientation="vertical"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
+        android:layout_marginTop="50dp"
         android:gravity="center">
         <LinearLayout
             android:layout_width="wrap_content"
@@ -72,7 +73,6 @@
             android:layout_height="wrap_content"
             android:background="@color/background"
             android:orientation="vertical"
-            android:layout_marginVertical="10dp"
             android:layout_marginHorizontal="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/button"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:padding="10dp"
             android:text="next"
             android:textColor="@color/text"

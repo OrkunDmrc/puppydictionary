@@ -26,7 +26,7 @@ import java.util.*
 
 
 class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
-    private var wordIndex: Int = 0
+    private var wordIndex: Int = -1
     var tts: TextToSpeech? = null
 
     override fun onCreateView(
@@ -69,7 +69,6 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
                     description_layout.visibility = View.VISIBLE
                     nextButton.visibility = View.VISIBLE
                     mic_button.isEnabled = false
-                    wordIndex++
                 }
             }
             override fun onPartialResults(bundle: Bundle) {}
@@ -103,7 +102,7 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             checkAudioPermission()
         }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size) {
+            if(wordIndex < wordsList.size - 1) {
                 fillObjects()
             }else {
                 parentFragmentManager.beginTransaction()
@@ -119,6 +118,7 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
     }
 
     private fun fillObjects(){
+        wordIndex++
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
                 tts?.language = Locale.US
@@ -126,7 +126,6 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
                 tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
             }
         })
-
         description_layout.visibility = View.INVISIBLE
         nextButton.visibility = View.INVISIBLE
         mic_button.isEnabled = true

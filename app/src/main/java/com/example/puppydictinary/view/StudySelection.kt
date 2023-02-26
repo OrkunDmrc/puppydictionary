@@ -17,7 +17,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
-    private var wordIndex: Int = 0
+    private var wordIndex: Int = -1
     private var correctIndex: Int = 0
     private lateinit var optionList: ArrayList<TextView>
     var tts: TextToSpeech? = null
@@ -48,7 +48,7 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
             })
         }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size)
+            if(wordIndex < wordsList.size - 1)
                 fillObjects()
             else
                 parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
@@ -64,7 +64,6 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
                     optionList[correctIndex].setBackgroundResource(R.color.button)
                     optionList[optionList.indexOf(item)].setBackgroundResource(R.color.wrong)
                 }
-                wordIndex++
                 nextButton.visibility = View.VISIBLE
                 makeDisenable()
             }
@@ -72,15 +71,17 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
     }
 
     private fun fillObjects(){
+        wordIndex++
+        println(wordIndex)
         makeEnable()
         word_text.text = wordsList[wordIndex].Word
         phonetic_text.text = wordsList[wordIndex].Phonetic
         for(item in optionList){
-            item.text = wordsList[(wordsList.indices).random()].Description.replace("\n", "")
+            item.text = wordsList[(wordsList.indices).random()].Description.replace("\n", " ")
             item.setBackgroundResource(R.color.card)
         }
         correctIndex = (0..3).random()
-        optionList[correctIndex].text = wordsList[wordIndex].Description.replace("\n", "")
+        optionList[correctIndex].text = wordsList[wordIndex].Description.replace("\n", " ")
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
                 tts?.language = Locale.US

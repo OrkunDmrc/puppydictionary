@@ -13,7 +13,8 @@
         tools:context=".view.StudySelection"
         android:background="@color/background"
         android:orientation="vertical"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
+        android:layout_marginTop="50dp"
         android:gravity="center">
         <LinearLayout
             android:id="@+id/phonetic_layout"
@@ -122,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/button"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:padding="10dp"
             android:text="next"
             android:textColor="@color/text"

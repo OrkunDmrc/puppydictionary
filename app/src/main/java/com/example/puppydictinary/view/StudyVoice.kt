@@ -22,7 +22,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
-    private var wordIndex: Int = 0
+    private var wordIndex: Int = -1
     var tts: TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,11 +63,10 @@ class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             imm.hideSoftInputFromWindow(view?.getWindowToken(), 0)
             check_button.isEnabled = false
             description_layout.visibility = View.VISIBLE
-            wordIndex++
             nextButton.visibility = View.VISIBLE
         }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size)
+            if(wordIndex < wordsList.size - 1)
                 fillObjects()
             else
                 parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySpeak(wordsList, studyImageViews)).commit()
@@ -80,6 +79,7 @@ class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
     }
 
     private fun fillObjects(){
+        wordIndex++
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
                 tts?.language = Locale.US
