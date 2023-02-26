@@ -72,7 +72,7 @@ class FavoriteWordsListViewModel(activity: Activity, myLang: String, learningLan
             val wordDesc = wordsLanguagesService.getAllById(id)
             var description = ""
             for(desc in wordDesc!!){
-                description += if(desc == wordDesc.last()) "${desc.Description}" else "${desc.Description}\n"
+                description += "\n${getCategoryNameById(desc.CategoryId)}:\n${desc.Description}\n"//if(desc == wordDesc.last()) "${desc.Description}" else "${desc.Description}\n"
             }
             wordViewModelList.add(WordViewModel(id, word!!.LangId, word.DescLangId, word.Word, word.Phonetic, word.IsFav, word.IsLearned, description))
         }

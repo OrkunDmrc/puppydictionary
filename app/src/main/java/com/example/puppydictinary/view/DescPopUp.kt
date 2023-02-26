@@ -1,11 +1,13 @@
 package com.example.puppydictinary.view
 
+import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.puppydictinary.R
@@ -30,6 +32,7 @@ class DescPopUp(val wordViewModel: WordViewModel) : DialogFragment() {
         return inflater.inflate(R.layout.fragment_desc_pop_up, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var tts: TextToSpeech? = null

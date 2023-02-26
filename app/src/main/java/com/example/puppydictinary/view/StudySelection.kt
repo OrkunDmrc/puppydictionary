@@ -24,7 +24,6 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -39,11 +38,23 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
         super.onViewCreated(view, savedInstanceState)
         studyImageViews[0].setBackgroundResource(R.color.card)
         optionList = arrayListOf<TextView>(option_1, option_2, option_3, option_4)
+        phonetic_layout.setOnClickListener {
+            tts = TextToSpeech(context, TextToSpeech.OnInitListener {
+                if (it == TextToSpeech.SUCCESS) {
+                    tts?.language = Locale.US
+                    tts?.setSpeechRate(1.0f)
+                    tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
+                }
+            })
+        }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size)
+            if(wordIndex < wordsList.size) {
+                wordIndex++
                 fillObjects()
-            else
-                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
+            }else {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
+            }
             nextButton.visibility = View.INVISIBLE
         }
         nextButton.visibility = View.INVISIBLE
@@ -56,21 +67,23 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
                     optionList[correctIndex].setBackgroundResource(R.color.button)
                     optionList[optionList.indexOf(item)].setBackgroundResource(R.color.wrong)
                 }
-                wordIndex++
+
                 nextButton.visibility = View.VISIBLE
+                makeDisenable()
             }
         }
     }
 
     private fun fillObjects(){
+        makeEnable()
         word_text.text = wordsList[wordIndex].Word
         phonetic_text.text = wordsList[wordIndex].Phonetic
         for(item in optionList){
-            item.text = wordsList[(wordsList.indices).random()].Description
+            item.text = wordsList[(wordsList.indices).random()].Description.replace("\n", "")
             item.setBackgroundResource(R.color.card)
         }
         correctIndex = (0..3).random()
-        optionList[correctIndex].text = wordsList[wordIndex].Description
+        optionList[correctIndex].text = wordsList[wordIndex].Description.replace("\n", "")
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
                 tts?.language = Locale.US
@@ -78,14 +91,17 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
                 tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
             }
         })
-        phonetic_layout.setOnClickListener {
-            tts = TextToSpeech(context, TextToSpeech.OnInitListener {
-                if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
-                    tts?.setSpeechRate(1.0f)
-                    tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
-                }
-            })
+    }
+
+    private fun makeEnable(){
+        for (item in optionList){
+            item.isEnabled = true
+        }
+    }
+
+    private fun makeDisenable(){
+        for (item in optionList){
+            item.isEnabled = false
         }
     }
 
