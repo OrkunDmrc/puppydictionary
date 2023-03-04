@@ -12,11 +12,13 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
+import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
+import kotlinx.android.synthetic.main.fragment_main_menu.*
 import kotlinx.android.synthetic.main.study_report_recycler_row.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val context: Context, val view: View) : RecyclerView.Adapter<StudyReportRecyclerAdapter.StudyReportVH>(){
+class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val reportList: ArrayList<ArrayList<Boolean>>, val context: Context, val view: View, val favoriteWordsListViewModel: FavoriteWordsListViewModel) : RecyclerView.Adapter<StudyReportRecyclerAdapter.StudyReportVH>(){
     class StudyReportVH(itemView: View) : RecyclerView.ViewHolder(itemView){
 
     }
@@ -34,7 +36,7 @@ class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val co
         val holderItemView = holder.itemView
         holderItemView.word_text.text = getPosition.Word
         holderItemView.phonetic_text.text = getPosition.Phonetic
-        holderItemView.description_text.text = getPosition.Description
+        holderItemView.description_text.text = getPosition.Description.replaceFirst("/n","")
         holderItemView.pronunciation_button.setOnClickListener {
             holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_down_24)
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
@@ -46,9 +48,39 @@ class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val co
                 holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_up_24)
             })
         }
-
+        holderItemView.add_remove_favorite_button.setOnClickListener {
+            if(favoriteWordsListViewModel.isFavoriteWord(getPosition.Word)){
+                favoriteWordsListViewModel.removeWordFavorites(getPosition.Word)
+                holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_border_24)
+            }else{
+                favoriteWordsListViewModel.addRecordedWordFavorites(getPosition.Word)
+                holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_24)
+            }
+        }
+        for (i in 0 until 3){
+            when(i){
+                0 ->
+                    if(reportList[i][position]){
+                        holderItemView.selection_study.setBackgroundResource(R.color.button)
+                    }else{
+                        holderItemView.selection_study.setBackgroundResource(R.color.wrong)
+                    }
+                1 ->
+                    if(reportList[i][position]){
+                        holderItemView.voice_study.setBackgroundResource(R.color.button)
+                    }else{
+                        holderItemView.voice_study.setBackgroundResource(R.color.wrong)
+                    }
+                2 ->
+                    if(reportList[i][position]){
+                        holderItemView.pronunciation_study.setBackgroundResource(R.color.button)
+                    }else{
+                        holderItemView.pronunciation_study.setBackgroundResource(R.color.wrong)
+                    }
+                else -> println("We have a problem here")
+            }
+        }
     }
-
     override fun getItemCount(): Int {
         return wordsList.size
     }

@@ -25,9 +25,10 @@ import kotlinx.android.synthetic.main.fragment_study_speak.nextButton
 import java.util.*
 
 
-class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
+class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>, val reportList: ArrayList<ArrayList<Boolean>>) : Fragment() {
     private var wordIndex: Int = -1
     var tts: TextToSpeech? = null
+    private var booleanList = arrayListOf<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,8 +62,10 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
                 if (result != null) {
                     if(result[0] == wordsList[wordIndex].Word){
                         mic_button_background.setBackgroundResource(R.color.button)
+                        booleanList.add(true)
                     }else{
                         mic_button_background.setBackgroundResource(R.color.wrong)
+                        booleanList.add(false)
                     }
                     speech_text.text = result[0]
                     mic_button.isEnabled = false
@@ -104,15 +107,20 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             if(wordIndex < wordsList.size - 1) {
                 fillObjects()
             }else {
+                reportList.add(booleanList)
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.study_frame, StudyReport(wordsList, studyImageViews)).commit()
+                    .replace(R.id.study_frame, StudyReport(wordsList, studyImageViews, reportList)).commit()
             }
             nextButton.visibility = View.INVISIBLE
             description_layout.visibility = View.INVISIBLE
         }
         not_speak.setOnClickListener {
+            for(i in booleanList.size - 1 until wordsList.size){
+                booleanList.add(false)
+            }
+            reportList.add(booleanList)
             parentFragmentManager.beginTransaction()
-                .replace(R.id.study_frame, StudyReport(wordsList, studyImageViews)).commit()
+                .replace(R.id.study_frame, StudyReport(wordsList, studyImageViews, reportList)).commit()
         }
         fillObjects()
     }

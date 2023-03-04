@@ -15,11 +15,14 @@ import kotlinx.android.synthetic.main.fragment_desc_pop_up.view.*
 import kotlinx.android.synthetic.main.fragment_study_selection.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.absoluteValue
 
 class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
     private var wordIndex: Int = -1
     private var correctIndex: Int = 0
     private lateinit var optionList: ArrayList<TextView>
+    private var reportList = arrayListOf<ArrayList<Boolean>>()
+    private var booleanList = arrayListOf<Boolean>()
     var tts: TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,10 +51,13 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
             })
         }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size - 1)
+            if(wordIndex < wordsList.size - 1){
                 fillObjects()
-            else
-                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews)).commit()
+            }
+            else{
+                reportList.add(booleanList)
+                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudyVoice(wordsList, studyImageViews, reportList)).commit()
+            }
             nextButton.visibility = View.INVISIBLE
         }
         nextButton.visibility = View.INVISIBLE
@@ -60,9 +66,11 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
             item.setOnClickListener{
                 if(correctIndex == optionList.indexOf(item) || optionList[correctIndex].text == item.text){
                     optionList[optionList.indexOf(item)].setBackgroundResource(R.color.button)
+                    booleanList.add(true)
                 }else{
                     optionList[correctIndex].setBackgroundResource(R.color.button)
                     optionList[optionList.indexOf(item)].setBackgroundResource(R.color.wrong)
+                    booleanList.add(false)
                 }
                 nextButton.visibility = View.VISIBLE
                 makeDisenable()

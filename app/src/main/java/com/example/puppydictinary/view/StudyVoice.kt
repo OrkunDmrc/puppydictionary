@@ -21,9 +21,10 @@ import kotlinx.android.synthetic.main.fragment_study_voice.word_text
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
+class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>, val reportList: ArrayList<ArrayList<Boolean>>) : Fragment() {
     private var wordIndex: Int = -1
     var tts: TextToSpeech? = null
+    private var booleanList = arrayListOf<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +58,10 @@ class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             println(word_text.text.toString().trim() == wordsList[wordIndex].Word.trim())
             if(word_text.text.toString().trim() == wordsList[wordIndex].Word.trim()){
                 word_text.setBackgroundResource(R.color.button)
+                booleanList.add(true)
             }else{
                 word_text.setBackgroundResource(R.color.wrong)
+                booleanList.add(false)
             }
             imm.hideSoftInputFromWindow(view?.getWindowToken(), 0)
             check_button.isEnabled = false
@@ -66,10 +69,14 @@ class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             nextButton.visibility = View.VISIBLE
         }
         nextButton.setOnClickListener {
-            if(wordIndex < wordsList.size - 1)
+            if(wordIndex < wordsList.size - 1){
                 fillObjects()
-            else
-                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySpeak(wordsList, studyImageViews)).commit()
+
+            }
+            else{
+                reportList.add(booleanList)
+                parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySpeak(wordsList, studyImageViews, reportList)).commit()
+            }
             nextButton.visibility = View.INVISIBLE
             description_layout.visibility = View.INVISIBLE
         }

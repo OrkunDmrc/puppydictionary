@@ -40,6 +40,8 @@ class Study : Fragment() {
         pronunciation_study.setBackgroundResource(R.color.empty)
         check_study.setBackgroundResource(R.color.empty)
         parentFragmentManager.beginTransaction().replace(R.id.study_frame, StudySelection(words, studyImageViews)).commit()
-
+        /*okButton.setOnClickListener {
+            requireActivity().onBackPressed()
+        }*/
     }
 }

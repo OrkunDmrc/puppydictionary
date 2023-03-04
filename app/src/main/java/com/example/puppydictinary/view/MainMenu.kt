@@ -73,7 +73,6 @@ class MainMenu : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var sharedReferences = requireActivity().getSharedPreferences("com.example.puppydictinary.view", Context.MODE_PRIVATE)
-        //val db = requireActivity().openOrCreateDatabase("DictinaryDB", Context.MODE_PRIVATE,null)
         myLang = sharedReferences.getString("myLang", "")!!
         learningLang = sharedReferences.getString("learningLang", "")!!
         langFrom = sharedReferences.getString("langFrom", learningLang)!!
