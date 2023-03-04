@@ -10,31 +10,29 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.puppydictinary.view.DescPopUp
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
-import com.example.puppydictinary.model.YandexDef
-import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
+import com.example.puppydictinary.view.DescPopUp
+import com.example.puppydictinary.viewmodel.LearnedWordListViewModel
 import kotlinx.android.synthetic.main.favorite_words_list_recycler_row.view.*
-import kotlinx.android.synthetic.main.favorite_words_list_recycler_row.view.phonetic_text
 import kotlinx.android.synthetic.main.fragment_main_menu.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.absoluteValue
 
-class FavoriteWordsListRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val context: Context, private val activity: AppCompatActivity, val favoriteWordsListViewModel: FavoriteWordsListViewModel) : RecyclerView.Adapter<FavoriteWordsListRecyclerAdapter.FavoriteWordsListVH>(){
-    class FavoriteWordsListVH(itemView: View) : RecyclerView.ViewHolder(itemView){
+class LearnedWordListRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val context: Context, private val activity: AppCompatActivity, val learnedWordsListViewModel: LearnedWordListViewModel) : RecyclerView.Adapter<LearnedWordListRecyclerAdapter.LearnedWordsListVH>() {
+    class LearnedWordsListVH(itemView: View): RecyclerView.ViewHolder(itemView){
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteWordsListVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LearnedWordsListVH {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.favorite_words_list_recycler_row, parent,false)
-        return FavoriteWordsListVH(view)
+        val view = inflater.inflate(R.layout.learned_word_list_recycler_row, parent,false)
+        return LearnedWordsListVH(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onBindViewHolder(holder: FavoriteWordsListVH, position: Int) {
+    override fun onBindViewHolder(holder: LearnedWordsListVH, position: Int) {
         var tts: TextToSpeech? = null
         val getPosition = wordsList.get(position)
         val holderItemView = holder.itemView
@@ -55,28 +53,28 @@ class FavoriteWordsListRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, 
                 holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_up_24)
             })
         }
-        holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_border_24)
-        if(getPosition.IsLearned == 1){
-            holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_24)
-        }
         holderItemView.add_remove_learned_button.setOnClickListener {
             if(getPosition.IsLearned == 1){
-                favoriteWordsListViewModel.removeWordLearned(getPosition.Word)
+                learnedWordsListViewModel.removeWordLearned(getPosition.Word)
                 holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_border_24)
                 getPosition.IsLearned = 0
             }else{
-                favoriteWordsListViewModel.addRecordedWordLearned(getPosition.Word)
+                learnedWordsListViewModel.addRecordedWordLearned(getPosition.Word)
                 holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_24)
                 getPosition.IsLearned = 1
             }
         }
+        holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_border_24)
+        if(getPosition.IsFav == 1){
+            holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_24)
+        }
         holderItemView.add_remove_favorite_button.setOnClickListener{
             if(getPosition.IsFav == 1){
-                favoriteWordsListViewModel.removeWordFavorites(getPosition.Word)
+                learnedWordsListViewModel.removeWordFavorites(getPosition.Word)
                 holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_border_24)
                 getPosition.IsFav = 0
             }else{
-                favoriteWordsListViewModel.addRecordedWordFavorites(getPosition.Word)
+                learnedWordsListViewModel.addRecordedWordFavorites(getPosition.Word)
                 holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_24)
                 getPosition.IsFav = 1
             }

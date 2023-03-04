@@ -15,8 +15,13 @@ import com.example.puppydictinary.model.WordViewModel
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
 import kotlinx.android.synthetic.main.fragment_main_menu.*
 import kotlinx.android.synthetic.main.study_report_recycler_row.view.*
+import kotlinx.android.synthetic.main.study_report_recycler_row.view.add_remove_favorite_button
+import kotlinx.android.synthetic.main.study_report_recycler_row.view.phonetic_text
+import kotlinx.android.synthetic.main.study_report_recycler_row.view.pronunciation_button
+import kotlinx.android.synthetic.main.study_report_recycler_row.view.word_text
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.absoluteValue
 
 class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val reportList: ArrayList<ArrayList<Boolean>>, val context: Context, val view: View, val favoriteWordsListViewModel: FavoriteWordsListViewModel) : RecyclerView.Adapter<StudyReportRecyclerAdapter.StudyReportVH>(){
     class StudyReportVH(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -48,13 +53,30 @@ class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val re
                 holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_up_24)
             })
         }
+        holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_border_24)
+        if(getPosition.IsLearned == 1){
+            holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_24)
+        }
+        holderItemView.add_remove_learned_button.setOnClickListener {
+            if(getPosition.IsLearned == 1){
+                favoriteWordsListViewModel.removeWordLearned(getPosition.Word)
+                holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_border_24)
+                getPosition.IsLearned = 0
+            }else{
+                favoriteWordsListViewModel.addRecordedWordLearned(getPosition.Word)
+                holderItemView.add_remove_learned_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_bookmark_24)
+                getPosition.IsLearned = 1
+            }
+        }
         holderItemView.add_remove_favorite_button.setOnClickListener {
-            if(favoriteWordsListViewModel.isFavoriteWord(getPosition.Word)){
+            if(getPosition.IsFav == 1){
                 favoriteWordsListViewModel.removeWordFavorites(getPosition.Word)
                 holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_border_24)
+                getPosition.IsFav = 0
             }else{
                 favoriteWordsListViewModel.addRecordedWordFavorites(getPosition.Word)
                 holderItemView.add_remove_favorite_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_favorite_24)
+                getPosition.IsFav = 1
             }
         }
         for (i in 0 until 3){

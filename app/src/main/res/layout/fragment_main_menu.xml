@@ -91,6 +91,7 @@
                         android:layout_marginHorizontal="5dp"
                         android:foreground="@drawable/ic_baseline_volume_up_24"/>
                     <Button
+                        android:id="@+id/add_remove_learned_button"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginHorizontal="5dp"

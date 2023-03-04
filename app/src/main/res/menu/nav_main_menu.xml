@@ -8,7 +8,7 @@
         app:showAsAction="never">
     </item>
     <item
-        android:id="@+id/learned_words"
+        android:id="@+id/learned_words_button"
         android:icon="@drawable/ic_baseline_bookmark_24"
         android:title="learned words"
         app:showAsAction="ifRoom"/>

@@ -19,10 +19,13 @@ import com.example.puppydictinary.R
 import com.example.puppydictinary.adapter.ResultWordRecyclerAdapter
 import com.example.puppydictinary.model.YandexDef
 import com.example.puppydictinary.model.entities.Word
-import com.example.puppydictinary.service.sqliteservice.SQLiteService
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
+import com.example.puppydictinary.viewmodel.LearnedWordListViewModel
 import com.example.puppydictinary.viewmodel.WordListViewModel
 import kotlinx.android.synthetic.main.fragment_main_menu.*
+import kotlinx.android.synthetic.main.fragment_main_menu.add_remove_favorite_button
+import kotlinx.android.synthetic.main.fragment_main_menu.pronunciation_button
+import kotlinx.android.synthetic.main.fragment_main_menu.word_information
 import java.util.*
 
 class MainMenu : Fragment() {
@@ -32,6 +35,7 @@ class MainMenu : Fragment() {
     private lateinit var langTo : String
     private lateinit var wordListViewModel : WordListViewModel
     private lateinit var favoriteWordsListViewModel: FavoriteWordsListViewModel
+    private lateinit var learnedWordsListViewModel: LearnedWordListViewModel
     private lateinit var yandexDef : List<YandexDef>
 
     private val words: MutableList<Word> = mutableListOf()
@@ -58,6 +62,11 @@ class MainMenu : Fragment() {
                 Navigation.findNavController(requireView()).navigate(action)
                 true
             }
+            R.id.learned_words_button -> {
+                val action = MainMenuDirections.actionMainMenuToLearnedWordList(myLang, learningLang)
+                Navigation.findNavController(requireView()).navigate(action)
+                true
+            }
             else ->  super.onOptionsItemSelected(item)
         }
     }
@@ -78,6 +87,7 @@ class MainMenu : Fragment() {
         langFrom = sharedReferences.getString("langFrom", learningLang)!!
         langTo = sharedReferences.getString("langTo", myLang)!!
         favoriteWordsListViewModel = FavoriteWordsListViewModel(requireActivity(), myLang, learningLang)
+        learnedWordsListViewModel = LearnedWordListViewModel(requireActivity(), myLang, learningLang)
         if(sharedReferences.getBoolean("isItFirst", true)){
             sharedReferences.edit().putBoolean("isItFirst",false).apply()
             favoriteWordsListViewModel.setFirstAdjusts()
@@ -101,6 +111,10 @@ class MainMenu : Fragment() {
                     val searchWord = search_src_text.text.toString().trim().lowercase()
                     wordListViewModel.refreshData(langFrom, langTo, searchWord)
                     observeLiveData()
+                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+                    if(learnedWordsListViewModel.isLearnedWord(searchWord)){
+                        add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
+                    }
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                     if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                         add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
@@ -129,6 +143,10 @@ class MainMenu : Fragment() {
                 val searchWord = search_src_text.text.toString().trim().lowercase()
                 wordListViewModel.refreshData(langFrom, langTo, searchWord)
                 observeLiveData()
+                add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+                if(learnedWordsListViewModel.isLearnedWord(searchWord)){
+                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
+                }
                 add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                 if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
@@ -141,10 +159,23 @@ class MainMenu : Fragment() {
                     val searchWord = paragraph_edit_text.text!!.substring(paragraph_edit_text.selectionStart, paragraph_edit_text.selectionEnd).trim().lowercase()
                     wordListViewModel.refreshData(langFrom, langTo, searchWord)
                     observeLiveData()
+                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+                    if(learnedWordsListViewModel.isLearnedWord(searchWord)){
+                        add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
+                    }
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                     if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                         add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
                     }
+                }
+            }
+            add_remove_learned_button.setOnClickListener {
+                if(learnedWordsListViewModel.isLearnedWord(searchedWord)){
+                    learnedWordsListViewModel.removeWordLearned(searchedWord)
+                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+                }else{
+                    learnedWordsListViewModel.addWordLearned(yandexDef)
+                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
                 }
             }
             add_remove_favorite_button.setOnClickListener{
