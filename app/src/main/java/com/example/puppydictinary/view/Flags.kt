@@ -12,6 +12,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.example.puppydictinary.R
+import com.example.puppydictinary.model.entities.Category
+import com.example.puppydictinary.model.entities.Language
+import com.example.puppydictinary.service.sqliteservice.CategoryService
+import com.example.puppydictinary.service.sqliteservice.LanguageService
 import kotlinx.android.synthetic.main.fragment_flags.*
 
 class Flags : Fragment() {
@@ -79,8 +83,72 @@ class Flags : Fragment() {
                 var sharedReferences = requireActivity().getSharedPreferences("com.example.puppydictinary.view", Context.MODE_PRIVATE)
                 sharedReferences.edit().putString("myLang", myLang).apply()
                 sharedReferences.edit().putString("learningLang", learningLang).apply()
+                sharedReferences.edit().putString("langFrom", learningLang).apply()
+                sharedReferences.edit().putString("langTo", myLang).apply()
+                val _db = requireActivity().openOrCreateDatabase("DictinaryDB", Context.MODE_PRIVATE,null)
+                val langService = LanguageService(_db, myLang, learningLang)
+                val myLangId = langService.getIdByCode(myLang)
+                if(langService.getIdByCode(myLang) == 0)
+                    langService.add(setLang(myLang))
+                val catService = CategoryService(_db, myLangId, langService.getIdByCode(learningLang))
+                if(!catService.haveLangId(myLangId)){
+                    for(item in setCat(myLang, myLangId)){
+                        catService.add(item)
+                    }
+                }
                 view?.let { Navigation.findNavController(it).navigate(FlagsDirections.actionFlagsToMainMenu()) }
             }
+        }
+    }
+
+    private fun setLang(code: String) : Language{
+        return when(code){
+            "tr" -> Language(0,code,"Türkçe")
+            "en" -> Language(0,code,"İngilizce")
+            "de" -> Language(0,code,"Almanca")
+            else -> Language(0,code,"")
+        }
+    }
+
+    private fun setCat(code: String, langId: Int) : ArrayList<Category>{
+        return when(code){
+            "tr" -> {
+                arrayListOf<Category>(
+                    Category(0,langId,"diğer"),
+                    Category(0,langId,"fiil"),
+                    Category(0,langId,"isim"),
+                    Category(0,langId,"sıfat"),
+                    Category(0,langId,"zamir"),
+                    Category(0,langId,"zarf"),
+                    Category(0,langId,"edat"),
+                    Category(0,langId,"bağlaç")
+                )
+            }
+            "en" -> {
+                arrayListOf<Category>(
+                    Category(0,langId,"another"),
+                    Category(0,langId,"verb"),
+                    Category(0,langId,"noun"),
+                    Category(0,langId,"adjective"),
+                    Category(0,langId,"pronoun"),
+                    Category(0,langId,"adverb"),
+                    Category(0,langId,"preposition"),
+                    Category(0,langId,"conjunction")
+                )
+            }
+            "de" -> {
+                arrayListOf<Category>(
+                    Category(0,langId,"andere"),
+                    Category(0,langId,"Verb"),
+                    Category(0,langId,"Substantiv"),
+                    Category(0,langId,"Adjektiv"),
+                    Category(0,langId,"Pronomen"),
+                    Category(0,langId,"Adverb"),
+                    Category(0,langId,"Präposition"),
+                    Category(0,langId,"Konjunktion")
+                )
+            }
+            else -> arrayListOf<Category>()
         }
     }
 }

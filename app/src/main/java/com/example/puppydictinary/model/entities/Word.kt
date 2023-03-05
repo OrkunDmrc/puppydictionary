@@ -5,7 +5,7 @@ data class Word(
     val LangId: Int,
     val DescLangId: Int,
     val Word: String,
-    val Phonetic: String,
+    val Phonetic: String?,
     var IsFav: Int,
     var IsLearned: Int
 ) {

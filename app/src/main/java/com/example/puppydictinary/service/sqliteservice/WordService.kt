@@ -70,7 +70,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
     }
 
     override fun createTable(){
-        _db.execSQL("CREATE TABLE IF NOT EXISTS Words (Id INTEGER PRIMARY KEY, LangId INTEGER NOT NULL, DescLangId INTEGER NOT NULL, Word NVARCHAR(50) NOT NULL, Phonetic NVARCHAR(50) NOT NULL, IsFav BOOLEAN DEFAULT 0 NOT NULL, IsLearned BOOLEAN DEFAULT 0 NOT NULL, FOREIGN KEY(LangId) REFERENCES Languages(Id), FOREIGN KEY(DescLangId) REFERENCES Languages(Id))")
+        _db.execSQL("CREATE TABLE IF NOT EXISTS Words (Id INTEGER PRIMARY KEY, LangId INTEGER NOT NULL, DescLangId INTEGER NOT NULL, Word NVARCHAR(50) NOT NULL, Phonetic NVARCHAR(50), IsFav BOOLEAN DEFAULT 0 NOT NULL, IsLearned BOOLEAN DEFAULT 0 NOT NULL, FOREIGN KEY(LangId) REFERENCES Languages(Id), FOREIGN KEY(DescLangId) REFERENCES Languages(Id))")
     }
 
     override fun insertTable(){

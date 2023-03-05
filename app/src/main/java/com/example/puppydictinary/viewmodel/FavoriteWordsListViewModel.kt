@@ -2,12 +2,10 @@ package com.example.puppydictinary.viewmodel
 
 import android.app.Activity
 import android.content.Context
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.puppydictinary.model.WordViewModel
 import com.example.puppydictinary.model.YandexDef
-import com.example.puppydictinary.model.entities.Category
 import com.example.puppydictinary.model.entities.Word
 import com.example.puppydictinary.model.entities.WordsLanguages
 import com.example.puppydictinary.service.sqliteservice.*

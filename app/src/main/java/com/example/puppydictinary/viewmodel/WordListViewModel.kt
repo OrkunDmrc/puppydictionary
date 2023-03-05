@@ -26,14 +26,14 @@ class WordListViewModel : ViewModel() {
         wordInformation.value = false
     }
 
-    fun refreshData(langFrom: String, langTo: String, text: String){
-        getMeansFromYandex(langFrom, langTo, text)
+    fun refreshData(langFrom: String, langTo: String, text: String, ui: String){
+        getMeansFromYandex(langFrom, langTo, text, ui)
     }
 
-    private fun getMeansFromYandex(langFrom: String, langTo: String, text: String){
+    private fun getMeansFromYandex(langFrom: String, langTo: String, text: String, ui: String){
         progressCircular.value = true
         disposable.add(
-            service.getData("$langFrom-$langTo", text)
+            service.getData("$langFrom-$langTo", text, ui)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object: DisposableSingleObserver<Yandex>(){

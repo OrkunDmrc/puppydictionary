@@ -67,6 +67,11 @@ class MainMenu : Fragment() {
                 Navigation.findNavController(requireView()).navigate(action)
                 true
             }
+            R.id.change_lang -> {
+                val action = MainMenuDirections.actionMainMenuToFlags()
+                Navigation.findNavController(requireView()).navigate(action)
+                true
+            }
             else ->  super.onOptionsItemSelected(item)
         }
     }
@@ -96,7 +101,7 @@ class MainMenu : Fragment() {
             if(myLang == "" || learningLang == ""){
                 view.let { Navigation.findNavController(it).navigate(MainMenuDirections.actionMainMenuToFlags()) }
             }
-            //(activity as AppCompatActivity).supportActionBar?.show()
+            (activity as AppCompatActivity).supportActionBar?.show()
             (activity as AppCompatActivity).supportActionBar?.title = "Puppy Dictionary"
             (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
             setDictionaryFlags(langFrom, langTo)
@@ -110,7 +115,7 @@ class MainMenu : Fragment() {
             search_src_text.setOnEditorActionListener() { textView, i, keyEvent ->
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
                     val searchWord = search_src_text.text.toString().trim().lowercase()
-                    wordListViewModel.refreshData(langFrom, langTo, searchWord)
+                    wordListViewModel.refreshData(langFrom, langTo, searchWord, myLang)
                     observeLiveData()
                     add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
                     if(learnedWordsListViewModel.isLearnedWord(searchWord)){
@@ -142,7 +147,7 @@ class MainMenu : Fragment() {
             observeLiveData()
             search_button.setOnClickListener{
                 val searchWord = search_src_text.text.toString().trim().lowercase()
-                wordListViewModel.refreshData(langFrom, langTo, searchWord)
+                wordListViewModel.refreshData(langFrom, langTo, searchWord, myLang)
                 observeLiveData()
                 add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
                 if(learnedWordsListViewModel.isLearnedWord(searchWord)){
@@ -158,7 +163,7 @@ class MainMenu : Fragment() {
                     Toast.makeText(context, "you choose nothing",Toast.LENGTH_LONG).show()
                 }else{
                     val searchWord = paragraph_edit_text.text!!.substring(paragraph_edit_text.selectionStart, paragraph_edit_text.selectionEnd).trim().lowercase()
-                    wordListViewModel.refreshData(langFrom, langTo, searchWord)
+                    wordListViewModel.refreshData(langFrom, langTo, searchWord, myLang)
                     observeLiveData()
                     add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
                     if(learnedWordsListViewModel.isLearnedWord(searchWord)){

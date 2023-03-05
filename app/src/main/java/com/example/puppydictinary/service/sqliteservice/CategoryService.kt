@@ -19,6 +19,14 @@ class CategoryService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : 
         return id
     }
 
+    fun haveLangId(id: Int): Boolean {
+        val cursor = _db.rawQuery("SELECT Id FROM Categories WHERE LangId = '${id}'", null)
+        if(cursor.moveToFirst()) {
+            return true
+        }
+        return false
+    }
+
     override fun getById(id: Int): Category? {
         val cursor = _db.rawQuery("SELECT Id, LangId, Name FROM Categories WHERE Id = ${id}", null)
         val idIndex = cursor.getColumnIndex("Id")
@@ -47,7 +55,7 @@ class CategoryService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : 
     }
 
     override fun add(entity: Category) {
-        TODO("Not yet implemented")
+        _db.execSQL("INSERT INTO Categories (LangId, Name) VALUES (${entity.LangId}, '${entity.Name}')")
     }
 
     override fun update(entity: Category) {

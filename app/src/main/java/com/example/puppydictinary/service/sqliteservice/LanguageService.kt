@@ -35,7 +35,7 @@ class LanguageService(db: SQLiteDatabase, myLang: String, learningLang: String) 
     }
 
     override fun add(entity: Language) {
-        TODO("Not yet implemented")
+        _db.execSQL("INSERT INTO Languages (Name, Code) VALUES (${entity.Name}, ${entity.Code})")
     }
 
     override fun update(entity: Language) {
