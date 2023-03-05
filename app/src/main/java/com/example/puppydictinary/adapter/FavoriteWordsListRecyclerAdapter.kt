@@ -45,7 +45,7 @@ class FavoriteWordsListRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, 
             holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_down_24)
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = MainActivity.findLangById(getPosition.DescLangId)
+                    tts?.language = MainActivity.findLangById(getPosition.LangId)
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(getPosition.Word, TextToSpeech.QUEUE_ADD, null,"")
                 }

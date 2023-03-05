@@ -116,14 +116,14 @@ class MainMenu : Fragment() {
                     val searchWord = search_src_text.text.toString().trim().lowercase()
                     wordListViewModel.refreshData(langFrom, langTo, searchWord, myLang)
                     observeLiveData()
-                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+                    /*add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
                     if(learnedWordsListViewModel.isLearnedWord(searchWord)){
                         add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
                     }
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                     if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                         add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
-                    }
+                    }*/
                     true
                 }
                 false
@@ -148,14 +148,7 @@ class MainMenu : Fragment() {
                 val searchWord = search_src_text.text.toString().trim().lowercase()
                 wordListViewModel.refreshData(langFrom, langTo, searchWord, myLang)
                 observeLiveData()
-                add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
-                if(learnedWordsListViewModel.isLearnedWord(searchWord)){
-                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
-                }
-                add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
-                if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
-                    add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
-                }
+
             }
             search_button2.setOnClickListener {
                 if(paragraph_edit_text.text.isNullOrEmpty()){
@@ -164,14 +157,14 @@ class MainMenu : Fragment() {
                     val searchWord = paragraph_edit_text.text!!.substring(paragraph_edit_text.selectionStart, paragraph_edit_text.selectionEnd).trim().lowercase()
                     wordListViewModel.refreshData(langFrom, langTo, searchWord, myLang)
                     observeLiveData()
-                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+                    /*add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
                     if(learnedWordsListViewModel.isLearnedWord(searchWord)){
                         add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
                     }
                     add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
                     if(favoriteWordsListViewModel.isFavoriteWord(searchWord)){
                         add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
-                    }
+                    }*/
                 }
             }
             add_remove_learned_button.setOnClickListener {
@@ -243,6 +236,7 @@ class MainMenu : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun observeLiveData(){
         wordListViewModel.resultWords.observe(viewLifecycleOwner,Observer{
             it?.let {
@@ -251,6 +245,14 @@ class MainMenu : Fragment() {
                 words.clear()
                 yandexDef = it
                 searchedWord = yandexDef[0].text
+                add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+                if(learnedWordsListViewModel.isLearnedWord(searchedWord)){
+                    add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
+                }
+                add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
+                if(favoriteWordsListViewModel.isFavoriteWord(searchedWord)){
+                    add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
+                }
             }
         })
         wordListViewModel.resultErrorMessage.observe(viewLifecycleOwner,Observer{

@@ -103,7 +103,7 @@ class FavoriteWordsListViewModel(activity: Activity, myLang: String, learningLan
             }
         }else{
             var description = ""
-            wordService.add(Word(0, myLangId, learningLangId, yandexDef[0].text, yandexDef[0].ts, 1, 0))
+            wordService.add(Word(0, learningLangId, myLangId, yandexDef[0].text, yandexDef[0].ts, 1, 0))
             val wordId = wordService.getIdByName(yandexDef[0].text)
             for(item in yandexDef){
                 description = ""

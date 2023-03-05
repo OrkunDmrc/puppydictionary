@@ -47,7 +47,7 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
             RecognizerIntent.EXTRA_LANGUAGE_MODEL,
             RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
         )
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US")//burası duruma göre değişecek
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, MainActivity.findSpeechVoiceById(wordsList[wordIndex].LangId))
         speechRecognizer.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(bundle: Bundle?) {}
             override fun onBeginningOfSpeech() {}

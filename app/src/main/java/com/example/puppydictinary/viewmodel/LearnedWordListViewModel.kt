@@ -81,7 +81,7 @@ class LearnedWordListViewModel(activity: Activity, myLang: String, learningLang:
             }
         }else{
             var description = ""
-            wordService.add(Word(0, myLangId, learningLangId, yandexDef[0].text, yandexDef[0].ts, 0, 1))
+            wordService.add(Word(0, learningLangId, myLangId, yandexDef[0].text, yandexDef[0].ts, 0, 1))
             val wordId = wordService.getIdByName(yandexDef[0].text)
             for(item in yandexDef){
                 description = ""

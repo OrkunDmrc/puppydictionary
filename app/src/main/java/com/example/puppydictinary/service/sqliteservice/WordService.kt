@@ -9,7 +9,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
     private val _learningLangId = learningLangId
 
     override fun getIdByName(name: String): Int {
-        val cursor = _db.rawQuery("SELECT Id FROM Words WHERE Word = '${name}' and LangId = ${_myLangId} and DescLangId = ${_learningLangId}",null)
+        val cursor = _db.rawQuery("SELECT Id FROM Words WHERE Word = '${name}' and LangId = ${_learningLangId} and DescLangId = ${_myLangId}",null)
         val idIndex = cursor.getColumnIndex("Id")
         var id = 0
         if(cursor.moveToFirst()) {
@@ -21,7 +21,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
 
     override fun getById(id: Int): Word? {
         var word: Word? = null
-        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned  FROM Words WHERE Id = $id and LangId = ${_myLangId} and DescLangId = ${_learningLangId}",null)
+        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned  FROM Words WHERE Id = $id and LangId = ${_learningLangId} and DescLangId = ${_myLangId}",null)
         if(cursor.count != 0){
             val idIndex = cursor.getColumnIndex("Id")
             val langIdIndex = cursor.getColumnIndex("LangId")
@@ -40,7 +40,7 @@ class WordService(db: SQLiteDatabase, myLangId: Int, learningLangId: Int) : SQLi
 
     override fun get(): List<Word> {
         var words: MutableList<Word> = mutableListOf()
-        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned FROM Words WHERE LangId = ${_myLangId} and DescLangId = ${_learningLangId}",null)
+        val cursor = _db.rawQuery("SELECT Id, LangId, DescLangId, Word, Phonetic, IsFav, IsLearned FROM Words WHERE LangId = ${_learningLangId} and DescLangId = ${_myLangId}",null)
         if(cursor.count != 0){
             val idIndex = cursor.getColumnIndex("Id")
             val langIdIndex = cursor.getColumnIndex("LangId")

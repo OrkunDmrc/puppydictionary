@@ -27,6 +27,14 @@ class MainActivity : AppCompatActivity() {
                 else -> Locale.US
             }
         }
+        fun findSpeechVoiceById(learningLangId: Int) : String {
+            return when(learningLangId){
+                1 -> "tr-TR"
+                2 -> "en-US"
+                3 -> "de-DE"
+                else -> "en-US"
+            }
+        }
     }
 }
 
