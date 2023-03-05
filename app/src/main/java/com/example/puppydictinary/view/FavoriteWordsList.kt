@@ -43,6 +43,10 @@ class FavoriteWordsList : Fragment() {
                 }
                 true
             }
+            android.R.id.home -> {
+                requireActivity().onBackPressed()
+                true
+            }
             else ->  super.onOptionsItemSelected(item)
         }
     }
@@ -56,6 +60,8 @@ class FavoriteWordsList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title = "Favorites"
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         arguments?.let {
             myLang = FavoriteWordsListArgs.fromBundle(it).myLang
             learningLang = FavoriteWordsListArgs.fromBundle(it).learningLang

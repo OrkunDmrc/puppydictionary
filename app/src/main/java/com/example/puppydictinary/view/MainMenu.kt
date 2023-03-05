@@ -97,7 +97,8 @@ class MainMenu : Fragment() {
                 view.let { Navigation.findNavController(it).navigate(MainMenuDirections.actionMainMenuToFlags()) }
             }
             //(activity as AppCompatActivity).supportActionBar?.show()
-            //(activity as AppCompatActivity).supportActionBar?.title = ""
+            (activity as AppCompatActivity).supportActionBar?.title = "Puppy Dictionary"
+            (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
             setDictionaryFlags(langFrom, langTo)
             change_dictionary_flags.setOnClickListener{
                 sharedReferences.edit().putString("langFrom", langTo).apply()
@@ -190,6 +191,19 @@ class MainMenu : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onStart() {
+        super.onStart()
+        add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_border_24)
+        if(learnedWordsListViewModel.isLearnedWord(searchedWord)){
+            add_remove_learned_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_bookmark_24)
+        }
+        add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
+        if(favoriteWordsListViewModel.isFavoriteWord(searchedWord)){
+            add_remove_favorite_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
+        }
+    }
+
     private fun setDictionaryFlags(langFrom: String, langTo: String){
         when (langFrom) {
             "en" -> {
@@ -262,12 +276,14 @@ class MainMenu : Fragment() {
         wordListViewModel.wordInformation.observe(viewLifecycleOwner,Observer{
             it?.let{
                 if(it){
-                    word_information.visibility = View.VISIBLE
+                    if(langFrom == learningLang)
+                        word_information.visibility = View.VISIBLE
                     recycler_view.visibility = View.VISIBLE
                     error_message.visibility = View.GONE
                     progress_circular.visibility = View.GONE
                 }else{
-                    word_information.visibility = View.GONE
+                    if(searchedWord.isNullOrEmpty() || langFrom != learningLang)
+                        word_information.visibility = View.GONE
                 }
             }
         })
