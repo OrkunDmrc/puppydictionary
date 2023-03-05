@@ -3,7 +3,6 @@ package com.example.puppydictinary.view
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
-import kotlinx.android.synthetic.main.favorite_words_list_recycler_row.view.*
 import kotlinx.android.synthetic.main.fragment_desc_pop_up.*
-import java.util.*
 
 
 class DescPopUp(val wordViewModel: WordViewModel) : DialogFragment() {
@@ -43,7 +40,7 @@ class DescPopUp(val wordViewModel: WordViewModel) : DialogFragment() {
             pronunciation_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_volume_down_24)
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
+                    tts?.language = MainActivity.findLangById(wordViewModel.LangId)
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(wordViewModel.Word, TextToSpeech.QUEUE_ADD, null,"")
                 }

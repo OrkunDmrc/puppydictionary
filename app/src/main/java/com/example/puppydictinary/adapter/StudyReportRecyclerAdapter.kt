@@ -8,20 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
+import com.example.puppydictinary.view.MainActivity
 import com.example.puppydictinary.viewmodel.FavoriteWordsListViewModel
-import kotlinx.android.synthetic.main.fragment_main_menu.*
 import kotlinx.android.synthetic.main.study_report_recycler_row.view.*
 import kotlinx.android.synthetic.main.study_report_recycler_row.view.add_remove_favorite_button
 import kotlinx.android.synthetic.main.study_report_recycler_row.view.phonetic_text
 import kotlinx.android.synthetic.main.study_report_recycler_row.view.pronunciation_button
 import kotlinx.android.synthetic.main.study_report_recycler_row.view.word_text
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.absoluteValue
 
 class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val reportList: ArrayList<ArrayList<Boolean>>, val context: Context, val view: View, val favoriteWordsListViewModel: FavoriteWordsListViewModel) : RecyclerView.Adapter<StudyReportRecyclerAdapter.StudyReportVH>(){
     class StudyReportVH(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -46,7 +43,7 @@ class StudyReportRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val re
             holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_down_24)
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
+                    tts?.language = MainActivity.findLangById(getPosition.LangId)
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(getPosition.Word, TextToSpeech.QUEUE_ADD, null,"")
                 }

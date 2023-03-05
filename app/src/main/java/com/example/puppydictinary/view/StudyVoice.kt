@@ -11,14 +11,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
-import kotlinx.android.synthetic.main.fragment_desc_pop_up.*
-import kotlinx.android.synthetic.main.fragment_study.*
-import kotlinx.android.synthetic.main.fragment_study_selection.*
 import kotlinx.android.synthetic.main.fragment_study_voice.*
 import kotlinx.android.synthetic.main.fragment_study_voice.description_text
 import kotlinx.android.synthetic.main.fragment_study_voice.nextButton
 import kotlinx.android.synthetic.main.fragment_study_voice.word_text
-import java.util.*
 import kotlin.collections.ArrayList
 
 class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>, val reportList: ArrayList<ArrayList<Boolean>>) : Fragment() {
@@ -46,7 +42,7 @@ class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
         voice_button.setOnClickListener{
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
+                    tts?.language = MainActivity.findLangById(wordsList[wordIndex].LangId)
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
                 }
@@ -89,7 +85,7 @@ class StudyVoice(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
         wordIndex++
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
-                tts?.language = Locale.US
+                tts?.language = MainActivity.findLangById(wordsList[wordIndex].LangId)
                 tts?.setSpeechRate(1.0f)
                 tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
             }

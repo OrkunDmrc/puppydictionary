@@ -1,7 +1,6 @@
 package com.example.puppydictinary.view
 
 import android.os.Bundle
-import android.os.Handler
 import android.speech.tts.TextToSpeech
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,11 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
-import kotlinx.android.synthetic.main.fragment_desc_pop_up.view.*
 import kotlinx.android.synthetic.main.fragment_study_selection.*
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.absoluteValue
 
 class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageViews: ArrayList<ImageView>) : Fragment() {
     private var wordIndex: Int = -1
@@ -44,7 +40,7 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
         phonetic_layout.setOnClickListener {
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
+                    tts?.language = MainActivity.findLangById(wordsList[wordIndex].LangId)
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
                 }
@@ -92,7 +88,7 @@ class StudySelection(val wordsList: ArrayList<WordViewModel>, val studyImageView
         optionList[correctIndex].text = wordsList[wordIndex].Description.replace("\n", " ")
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
-                tts?.language = Locale.US
+                tts?.language = MainActivity.findLangById(wordsList[wordIndex].LangId)
                 tts?.setSpeechRate(1.0f)
                 tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
             }

@@ -1,9 +1,7 @@
 package com.example.puppydictinary.view
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -94,7 +92,7 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
         phonetic_layout.setOnClickListener{
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
+                    tts?.language = MainActivity.findLangById(wordsList[wordIndex].LangId)
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
                 }
@@ -129,7 +127,7 @@ class StudySpeak(val wordsList: ArrayList<WordViewModel>, val studyImageViews: A
         wordIndex++
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
-                tts?.language = Locale.US
+                tts?.language = MainActivity.findLangById(wordsList[wordIndex].LangId)
                 tts?.setSpeechRate(1.0f)
                 tts?.speak(wordsList[wordIndex].Word, TextToSpeech.QUEUE_ADD, null,"")
             }

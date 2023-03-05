@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.puppydictinary.R
 import com.example.puppydictinary.model.WordViewModel
 import com.example.puppydictinary.view.DescPopUp
+import com.example.puppydictinary.view.MainActivity
 import com.example.puppydictinary.viewmodel.LearnedWordListViewModel
 import kotlinx.android.synthetic.main.favorite_words_list_recycler_row.view.*
-import kotlinx.android.synthetic.main.fragment_main_menu.*
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.absoluteValue
 
 class LearnedWordListRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, val context: Context, private val activity: AppCompatActivity, val learnedWordsListViewModel: LearnedWordListViewModel) : RecyclerView.Adapter<LearnedWordListRecyclerAdapter.LearnedWordsListVH>() {
     class LearnedWordsListVH(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -46,7 +44,7 @@ class LearnedWordListRecyclerAdapter(var wordsList: ArrayList<WordViewModel>, va
             holderItemView.pronunciation_button.foreground = ContextCompat.getDrawable(context, R.drawable.ic_baseline_volume_down_24)
             tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
+                    tts?.language = MainActivity.findLangById(getPosition.LangId)
                     tts?.setSpeechRate(1.0f)
                     tts?.speak(getPosition.Word, TextToSpeech.QUEUE_ADD, null,"")
                 }

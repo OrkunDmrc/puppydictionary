@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.fragment_main_menu.*
 import kotlinx.android.synthetic.main.fragment_main_menu.add_remove_favorite_button
 import kotlinx.android.synthetic.main.fragment_main_menu.pronunciation_button
 import kotlinx.android.synthetic.main.fragment_main_menu.word_information
-import java.util.*
 
 class MainMenu : Fragment() {
     private lateinit var myLang : String
@@ -133,7 +132,7 @@ class MainMenu : Fragment() {
                 pronunciation_button.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_volume_down_24)
                 tts = TextToSpeech(context, TextToSpeech.OnInitListener {
                     if (it == TextToSpeech.SUCCESS) {
-                        tts?.language = Locale.US
+                        tts?.language = MainActivity.findLangByCode(learningLang)
                         tts?.setSpeechRate(1.0f)
                         tts?.speak(searchedWord, TextToSpeech.QUEUE_ADD, null,"")
                     }
