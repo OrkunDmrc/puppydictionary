@@ -14,4 +14,4 @@
 - google.android.gms
 
 ## Play Store Link
-[Pupp Dictionary](https://play.google.com/store/apps/details?id=com.NuckromeGame.puppydictinary&hl=tr&gl=US)
+[Puppy Dictionary](https://play.google.com/store/apps/details?id=com.NuckromeGame.puppydictinary&hl=tr&gl=US)
