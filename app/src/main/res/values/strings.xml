@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Puppy Dictionary</string>
+    <string name="learnLang">Öğrenilecek dil</string>
+    <string name="myLang">Benim dilim</string>
+    <string name="next">ileri</string>
+    <string name="search">Arama</string>
+    <string name="notFound">Bulunamadı</string>
+    <string name="textMessage">Buraya metni yapıştırın ve kelimeyi seçin</string>
+    <string name="cantSpeak">Şu an konuşamam</string>
+    <string name="word">Kelime</string>
+    <string name="changeLang">Dili Değiştir</string>
+    <string name="learnedWords">Öğrenilen Kelimeler</string>
+    <string name="favWords">Favori Kelimeler</string>
+    <string name="studyWords">Çalışma Kelimeleri</string>
+    <string name="popupBeforeNumber">Rasgele</string>
+    <string name="popupAfterNumber">Kelime Çalış</string>
+    <string name="mustChoose">Seçmelisiniz</string>
+    <string name="studyMessage">Çalışma yapabilmeniz için kelime sayısının 5\'den büyük olması gerekmektedir.</string>
+
+</resources>

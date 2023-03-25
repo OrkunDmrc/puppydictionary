@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PuppyDictionary</string>
+    <string name="learnLang">I want to learn</string>
+    <string name="myLang">My language</string>
+    <string name="next">next</string>
+    <string name="search">Search</string>
+    <string name="notFound">Not Found</string>
+    <string name="textMessage">Paste Here A Text And Select A Word</string>
+    <string name="cantSpeak">I cannot speak</string>
+    <string name="word">Word</string>
+    <string name="changeLang">Change Language</string>
+    <string name="learnedWords">Learned Words</string>
+    <string name="favWords">Fav Words</string>
+    <string name="studyWords">Study Words</string>
+    <string name="popupBeforeNumber">Study Random</string>
+    <string name="popupAfterNumber">Words</string>
+    <string name="mustChoose">You must choose</string>
+    <string name="studyMessage">Words number must be greater then 5 to study.</string>
+
+</resources>

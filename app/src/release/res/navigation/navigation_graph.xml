@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/mainMenu">
+
+    <fragment
+        android:id="@+id/flags"
+        android:name="com.example.puppydictinary.view.Flags"
+        android:label="fragment_flags"
+        tools:layout="@layout/fragment_flags" >
+        <action
+            android:id="@+id/action_flags_to_mainMenu"
+            app:destination="@id/mainMenu" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainMenu"
+        android:name="com.example.puppydictinary.view.MainMenu"
+        android:label="fragment_main_menu"
+        tools:layout="@layout/fragment_main_menu" >
+        <action
+            android:id="@+id/action_mainMenu_to_flags"
+            app:destination="@id/flags" />
+        <action
+            android:id="@+id/action_mainMenu_to_favoriteWordsList"
+            app:destination="@id/favoriteWordsList" />
+        <action
+            android:id="@+id/action_mainMenu_to_learnedWordList"
+            app:destination="@id/learnedWordList" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteWordsList"
+        android:name="com.example.puppydictinary.view.FavoriteWordsList"
+        android:label="fragment_favorite_words_list"
+        tools:layout="@layout/fragment_favorite_words_list" >
+        <action
+            android:id="@+id/action_favoriteWordsList_to_mainMenu"
+            app:destination="@id/mainMenu" />
+        <argument
+            android:name="myLang"
+            app:argType="string" />
+        <argument
+            android:name="learningLang"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_favoriteWordsList_to_study"
+            app:destination="@id/study" />
+    </fragment>
+    <fragment
+        android:id="@+id/study"
+        android:name="com.example.puppydictinary.view.Study"
+        android:label="fragment_study"
+        tools:layout="@layout/fragment_study" >
+        <action
+            android:id="@+id/action_study_to_favoriteWordsList"
+            app:destination="@id/favoriteWordsList" />
+        <argument
+            android:name="wordIds"
+            app:argType="integer[]" />
+        <argument
+            android:name="myLang"
+            app:argType="string" />
+        <argument android:name="learningLang" />
+    </fragment>
+    <fragment
+        android:id="@+id/learnedWordList"
+        android:name="com.example.puppydictinary.view.LearnedWordList"
+        android:label="LearnedWordList" >
+        <action
+            android:id="@+id/action_learnedWordList_to_mainMenu"
+            app:destination="@id/mainMenu" />
+        <argument
+            android:name="myLang"
+            app:argType="string" />
+        <argument
+            android:name="learningLang"
+            app:argType="string" />
+    </fragment>
+</navigation>

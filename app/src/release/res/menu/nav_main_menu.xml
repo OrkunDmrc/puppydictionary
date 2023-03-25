@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/change_lang"
+        android:title="@string/changeLang"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/learned_words_button"
+        android:icon="@drawable/ic_baseline_bookmark_24"
+        android:title="@string/learnedWords"
+        app:showAsAction="ifRoom"/>
+    <!--<item
+        android:id="@+id/study_words_button"
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:title="study words"
+        app:showAsAction="ifRoom"/>-->
+    <item
+        android:id="@+id/fav_words_button"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="@string/favWords"
+        app:showAsAction="ifRoom"/>
+
+
+</menu>
