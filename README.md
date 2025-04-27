@@ -26,11 +26,11 @@ Puppy Dictionary is a language learning application designed to help users expan
 ## Screenshots
 
 <p align="center">
-  <img src="/image1.jpeg" alt="Screenshot 1" width="45%">
-  <img src="/image2.jpeg" alt="Screenshot 2" width="45%">
-  <img src="/image3.jpeg" alt="Screenshot 2" width="45%">
-  <img src="/image4.jpeg" alt="Screenshot 2" width="45%">
-  <img src="/image5.jpeg" alt="Screenshot 2" width="45%">
+  <img src="/image1.jpeg" alt="Screenshot 1" width="30%">
+  <img src="/image2.jpeg" alt="Screenshot 2" width="30%">
+  <img src="/image3.jpeg" alt="Screenshot 2" width="30%">
+  <img src="/image4.jpeg" alt="Screenshot 2" width="30%">
+  <img src="/image5.jpeg" alt="Screenshot 2" width="30%">
 </p>
 
 ## Installation
